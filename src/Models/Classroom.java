@@ -3,21 +3,21 @@ package Models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SchoolClass {
+public class Classroom {
     private String classId;
     private String className;
     private String schoolYear;
     private String course; // niên khóa
     private Teacher homeroomTeacher; // giáo viên chủ nhiệm
-    private List<Student> students;
-    private List<Subject> subjects;
+    private final List<Student> students;
+    private final List<Subject> subjects;
 
-    public SchoolClass() {
+    public Classroom() {
         this.students = new ArrayList<>();
         this.subjects = new ArrayList<>();
     }
 
-    public SchoolClass(String classId, String className, String schoolYear,
+    public Classroom(String classId, String className, String schoolYear,
                        String course, Teacher homeroomTeacher) {
         this.classId = classId;
         this.className = className;
