@@ -46,4 +46,26 @@ public class Student extends Person {
         return id + "," + name + "," + dateOfBirth + "," + gender + "," + className + "," +
                 course + "," + parentPhone + "," + address;
     }
+
+    public static  Student fromString(String line){
+        String[] parts = line.split(",");
+        if(parts.length != 9) return null;
+
+        try{
+            return new Student(
+                    parts[0],
+                    parts[1],
+                    LocalDate.parse(parts[2]),
+                    parts[3],
+                    parts[4],
+                    parts[5],
+                    parts[6],
+                    parts[7],
+                    parts[8]
+            );
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
