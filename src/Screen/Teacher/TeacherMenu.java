@@ -1,33 +1,29 @@
-package Screen.ClassRoom;
+package Screen.Teacher;
 
 import Screen.AbstractScreen;
 
-public class ClassRoomMenu extends AbstractScreen {
-    private final AddClassRoomScreen addScreen;
-    private final SearchClassRoomScreen searchScreen;
-    private final DeleteClassRoomScreen deleteScreen;
-    private final UpdateClassRoomScreen updateScreen;
-    private final ListClassRoomScreen listScreen;
+public class TeacherMenu extends AbstractScreen {
+    private final Teachercreate createScreen;
+    private final Teacherupdate updateScreen;
+    private final Teacherdelete deleteScreen;
 
-    public ClassRoomMenu() {
+    public TeacherMenu() {
         super();
-        this.addScreen = new AddClassRoomScreen();
-        this.searchScreen = new SearchClassRoomScreen();
-        this.deleteScreen = new DeleteClassRoomScreen();
-        this.updateScreen = new UpdateClassRoomScreen();
-        this.listScreen = new ListClassRoomScreen();
+        this.createScreen = new Teachercreate();
+        this.updateScreen = new Teacherupdate();
+        this.deleteScreen = new Teacherdelete();
     }
 
     @Override
     public void display() {
         System.out.println("===========================================");
-        System.out.println("       HE THONG QUAN LY LOP HOC");
+        System.out.println("       HE THONG QUAN LY GIAO VIEN");
         System.out.println("===========================================");
-        System.out.println("  1. Them Lop Hoc Moi");
-        System.out.println("  2. Tim Kiem Lop Hoc");
-        System.out.println("  3. Cap Nhat Lop Hoc");
-        System.out.println("  4. Xoa Lop Hoc");
-        System.out.println("  5. Danh Sach Tat Ca Lop Hoc");
+        System.out.println("  1. Them Giao Vien Moi");
+        System.out.println("  2. Cap Nhat Giao Vien");
+        System.out.println("  3. Xoa Giao Vien");
+        System.out.println("  4. Tim Kiem Giao Vien");
+        System.out.println("  5. Danh Sach Tat Ca Giao Vien");
         System.out.println("  0. Quay Lai Menu Chinh");
         System.out.println("===========================================");
     }
@@ -42,24 +38,24 @@ public class ClassRoomMenu extends AbstractScreen {
 
             switch (choice) {
                 case 1:
-                    addScreen.display();
-                    addScreen.handleInput();
+                    createScreen.display();
+                    createScreen.handleInput();
                     break;
                 case 2:
-                    searchScreen.display();
-                    searchScreen.handleInput();
-                    break;
-                case 3:
                     updateScreen.display();
                     updateScreen.handleInput();
                     break;
-                case 4:
+                case 3:
                     deleteScreen.display();
                     deleteScreen.handleInput();
                     break;
+                case 4:
+                    System.out.println("\nChuc nang Tim Kiem Giao Vien dang duoc phat trien...");
+                    pause();
+                    break;
                 case 5:
-                    listScreen.display();
-                    listScreen.handleInput();
+                    System.out.println("\nChuc nang Danh Sach Giao Vien dang duoc phat trien...");
+                    pause();
                     break;
                 case 0:
                     System.out.println("\nDang quay lai menu chinh...");
@@ -72,3 +68,4 @@ public class ClassRoomMenu extends AbstractScreen {
         }
     }
 }
+

@@ -1,33 +1,33 @@
-package Screen.ClassRoom;
+package Screen.Student;
 
 import Screen.AbstractScreen;
 
-public class ClassRoomMenu extends AbstractScreen {
-    private final AddClassRoomScreen addScreen;
-    private final SearchClassRoomScreen searchScreen;
-    private final DeleteClassRoomScreen deleteScreen;
-    private final UpdateClassRoomScreen updateScreen;
-    private final ListClassRoomScreen listScreen;
+public class StudentMenu extends AbstractScreen {
+    private final AddStudentScreen addScreen;
+    private final UpdateStudentScreen updateScreen;
+    private final DeleteStudentScreen deleteScreen;
+    private final SearchStudentScreen searchScreen;
+    private final ListStudentScreen listScreen;
 
-    public ClassRoomMenu() {
+    public StudentMenu() {
         super();
-        this.addScreen = new AddClassRoomScreen();
-        this.searchScreen = new SearchClassRoomScreen();
-        this.deleteScreen = new DeleteClassRoomScreen();
-        this.updateScreen = new UpdateClassRoomScreen();
-        this.listScreen = new ListClassRoomScreen();
+        this.addScreen = new AddStudentScreen();
+        this.updateScreen = new UpdateStudentScreen();
+        this.deleteScreen = new DeleteStudentScreen();
+        this.searchScreen = new SearchStudentScreen();
+        this.listScreen = new ListStudentScreen();
     }
 
     @Override
     public void display() {
         System.out.println("===========================================");
-        System.out.println("       HE THONG QUAN LY LOP HOC");
+        System.out.println("       HE THONG QUAN LY HOC SINH");
         System.out.println("===========================================");
-        System.out.println("  1. Them Lop Hoc Moi");
-        System.out.println("  2. Tim Kiem Lop Hoc");
-        System.out.println("  3. Cap Nhat Lop Hoc");
-        System.out.println("  4. Xoa Lop Hoc");
-        System.out.println("  5. Danh Sach Tat Ca Lop Hoc");
+        System.out.println("  1. Them Hoc Sinh Moi");
+        System.out.println("  2. Tim Kiem Hoc Sinh");
+        System.out.println("  3. Cap Nhat Hoc Sinh");
+        System.out.println("  4. Xoa Hoc Sinh");
+        System.out.println("  5. Danh Sach Tat Ca Hoc Sinh");
         System.out.println("  0. Quay Lai Menu Chinh");
         System.out.println("===========================================");
     }
@@ -72,3 +72,4 @@ public class ClassRoomMenu extends AbstractScreen {
         }
     }
 }
+

@@ -1,19 +1,19 @@
-package Screen.Teacher;
+package Screen.Student;
 
 import Screen.AbstractScreen;
 
-public class Teacherupdate extends AbstractScreen {
+public class ListStudentScreen extends AbstractScreen {
 
     @Override
     public void display() {
         System.out.println("===========================================");
-        System.out.println("          CAP NHAT GIAO VIEN");
+        System.out.println("      DANH SACH TAT CA HOC SINH");
         System.out.println("===========================================");
     }
 
     @Override
     public void handleInput() {
-        System.out.println("\n[Thong bao] Chuc nang Cap Nhat Giao Vien dang duoc phat trien...");
+        System.out.println("\n[Thong bao] Chuc nang Danh Sach Hoc Sinh dang duoc phat trien...");
         pause();
     }
 }

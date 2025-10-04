@@ -20,13 +20,13 @@ public abstract class AbstractScreen implements IScreen {
                 System.out.print(prompt);
                 return Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("Định dạng số không hợp lệ. Vui lòng thử lại.");
+                System.out.println("Dinh dang so khong hop le. Vui long thu lai.");
             }
         }
     }
 
     protected void pause() {
-        System.out.println("\nNhấn Enter để tiếp tục...");
+        System.out.println("\nNhan Enter de tiep tuc...");
         scanner.nextLine();
     }
 
