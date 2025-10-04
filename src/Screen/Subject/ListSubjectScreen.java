@@ -46,13 +46,14 @@ public class ListSubjectScreen extends AbstractScreen {
 
         System.out.printf("%-15s %-20s %-10s %-10s %-20s %-20s %-25s %-15s%n",
                 "Mã môn học", "Tên môn học ", "Số tiết", "Hệ số", "Loại môn", "Giáo viên phụ trách", "Mô tả", "Trạng thái");
-        System.out.println("-------------------------------------------------------------------------------------------");
+        System.out.println("-".repeat(50));
 
         for (Subject s : subjectsList) {
-            System.out.printf("%-15s %-20s %-10s %-10s %-5s %-20s %-20s %-25s %-15s%n",
+            System.out.printf("%-15s %-20s %-10d %-10f %-20s %-20s %-25s %-15s%n",
                     s.getSubjectID(), s.getSubjectName(), s.getLessonCount(),
                     s.getConfficient(), s.getSubjectType(), s.getTeacherInCharge(),
                     s.getDescription(), s.getStatus());
+            System.out.println("-".repeat(50));
         }
     }
 
