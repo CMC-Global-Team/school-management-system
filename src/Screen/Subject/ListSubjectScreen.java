@@ -13,18 +13,14 @@ public class ListSubjectScreen extends AbstractScreen {
     private static final String FILE_PATH = "src/Data/subjects.txt";
     private List<Subject> subjectsList;
 
-    public ListSubjectScreen() {
-        loadSubject();
-    }
-
     public void loadSubject() {
         subjectsList = new ArrayList<>();
         if (FileUtil.fileExists(FILE_PATH)) {
             try {
                 List<String> lines = FileUtil.readLines(FILE_PATH);
                 for (String line : lines) {
-                    Subject t = Subject.fromString(line);
-                    if (t != null) subjectsList.add(t);
+                    Subject s = Subject.fromString(line);
+                    if (s != null) subjectsList.add(s);
                 }
             } catch (IOException e) {
                 System.err.println("Lỗi khi đọc file môn học: " + e.getMessage());
@@ -40,7 +36,7 @@ public class ListSubjectScreen extends AbstractScreen {
         System.out.println("└──────────────────────────────────────────┘");
 
         if (subjectsList.isEmpty()) {
-            System.out.println("Chưa có môn học nào trong hệ thống.");
+            System.out.println("Hiện chưa có môn học nào!");
             return;
         }
 

@@ -24,7 +24,7 @@ public class SearchSubjectScreen extends AbstractScreen {
             List<String> lines = FileUtil.readLines(FILE_PATH);
             List<Subject> subjects = lines.stream()
                     .map(Subject::fromString)
-                    .collect(Collectors.toList());
+                    .toList();
 
             if (subjects.isEmpty()) {
                 System.out.println("Hiện chưa có môn học nào trong hệ thống!");

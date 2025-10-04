@@ -24,18 +24,18 @@ public class UpdateSubjectScreen extends AbstractScreen {
     public void handleInput() {
         try {
             List<String> lines = FileUtil.readLines(FILE_PATH);
-            List<Subject> teachers = lines.stream()
+            List<Subject> subjects = lines.stream()
                     .map(Subject::fromString)
-                    .collect(Collectors.toList());
+                    .toList();
 
-            if (teachers.isEmpty()) {
+            if (subjects.isEmpty()) {
                 System.out.println("Hiện chưa có môn học nào trong hệ thống!");
                 pause();
                 return;
             }
 
             String id = InputUtil.getNonEmptyString("Nhập mã môn học cần cập nhật: ");
-            Subject s = teachers.stream()
+            Subject s = subjects.stream()
                     .filter(x -> x.getSubjectID().equalsIgnoreCase(id))
                     .findFirst()
                     .orElse(null);
@@ -81,8 +81,8 @@ public class UpdateSubjectScreen extends AbstractScreen {
             String status = InputUtil.getString("Trạng thái (" + s.getSubjectName() + "): ");
             if (!status.isEmpty()) s.setStatus(status);
 
-            // Lưu lại file
-            List<String> newLines = teachers.stream().map(Subject::toString).collect(Collectors.toList());
+            // Save file
+            List<String> newLines = subjects.stream().map(Subject::toString).collect(Collectors.toList());
             FileUtil.writeLines(FILE_PATH, newLines);
 
             System.out.println("Cập nhật thông tin môn học thành công!");
