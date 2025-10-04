@@ -5,6 +5,7 @@ public class Person {
     protected String name;
     protected String status;
 
+    public Person() {}
     public Person(String id, String name, String status) {
         this.id = id;
         this.name = name;

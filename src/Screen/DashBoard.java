@@ -2,17 +2,17 @@ package Screen;
 
 import Screen.ClassRoom.ClassRoomMenu;
 import Screen.Student.StudentMenu;
-import Screen.Teacher.TeacherMenu;
+import Screen.Teacher.MenuTeacherScreen;
 
 public class DashBoard extends AbstractScreen {
     private final ClassRoomMenu classRoomMenu;
-    private final TeacherMenu teacherMenu;
+    private final MenuTeacherScreen teacherMenu;
     private final StudentMenu studentMenu;
 
     public DashBoard() {
         super();
         this.classRoomMenu = new ClassRoomMenu();
-        this.teacherMenu = new TeacherMenu();
+        this.teacherMenu = new MenuTeacherScreen();
         this.studentMenu = new StudentMenu();
     }
 
