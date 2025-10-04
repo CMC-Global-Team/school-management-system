@@ -1,9 +1,11 @@
 package Models;
-
-public class Person {
+public class Person  {
     protected String id;
     protected String name;
     protected String status;
+
+    public Person() {
+    }
 
     public Person(String id, String name, String status) {
         this.id = id;
@@ -11,6 +13,8 @@ public class Person {
         this.status = status;
 
     }
+
+
     public String getId() {return id;}
     public void setId(String id) {this.id = id;}
 
