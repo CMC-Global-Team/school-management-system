@@ -1,19 +1,20 @@
-package Screen.Teacher;
+package Screen.Student;
 
 import Screen.AbstractScreen;
 
-public class Teacherdelete extends AbstractScreen {
+public class SearchStudentScreen extends AbstractScreen {
 
     @Override
     public void display() {
         System.out.println("┌──────────────────────────────────────────┐");
-        System.out.println("│              XÓA GIÁO VIÊN               │");
+        System.out.println("│            TÌM KIẾM HỌC SINH             │");
         System.out.println("└──────────────────────────────────────────┘");
     }
 
+
     @Override
     public void handleInput() {
-        System.out.println("\n[Thong bao] Chuc nang Xoa Giao Vien dang duoc phat trien...");
+        System.out.println("\n[Thong bao] Chuc nang Tim Kiem Hoc Sinh dang duoc phat trien...");
         pause();
     }
 }
