@@ -2,16 +2,20 @@ package Screen.Teacher;
 
 import Screen.AbstractScreen;
 
-public class TeacherMenu extends AbstractScreen {
-    private final Teachercreate createScreen;
-    private final Teacherupdate updateScreen;
-    private final Teacherdelete deleteScreen;
+public class MenuTeacherScreen extends AbstractScreen {
+    private final AddTeacherScreen createScreen;
+    private final UpdateTeacherScreen updateScreen;
+    private final DeleteTeacherScreen deleteScreen;
+    private final SearchTeacherScreen searchScreen;
+    private final ListTeacherScreen listScreen;
 
-    public TeacherMenu() {
+    public MenuTeacherScreen() {
         super();
-        this.createScreen = new Teachercreate();
-        this.updateScreen = new Teacherupdate();
-        this.deleteScreen = new Teacherdelete();
+        this.createScreen = new AddTeacherScreen();
+        this.updateScreen = new UpdateTeacherScreen();
+        this.deleteScreen = new DeleteTeacherScreen();
+        this.searchScreen = new SearchTeacherScreen();
+        this.listScreen = new ListTeacherScreen();
     }
 
     @Override
@@ -51,11 +55,12 @@ public class TeacherMenu extends AbstractScreen {
                     deleteScreen.handleInput();
                     break;
                 case 4:
-                    System.out.println("\nChuc nang Tim Kiem Giao Vien dang duoc phat trien...");
-                    pause();
+                    searchScreen.display();
+                    searchScreen.handleInput();
                     break;
                 case 5:
-                    System.out.println("\nChuc nang Danh Sach Giao Vien dang duoc phat trien...");
+                    listScreen.display();
+                    listScreen.handleInput();
                     pause();
                     break;
                 case 0:
