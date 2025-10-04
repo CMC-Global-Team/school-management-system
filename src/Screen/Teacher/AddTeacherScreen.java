@@ -16,12 +16,16 @@ public class Teachercreate extends AbstractScreen {
     public void handleInput() {
         System.out.println("\n[Thong bao] Chuc nang Them Giao Vien dang duoc phat trien...");
         System.out.println("Cac thong tin se bao gom:");
-        System.out.println("- Ma giao vien");
-        System.out.println("- Ho va ten");
-        System.out.println("- Ngay sinh");
-        System.out.println("- Dia chi");
-        System.out.println("- So dien thoai");
-        System.out.println("- Mon day");
+        System.out.println("- Mã giáo viên");
+        System.out.println("- Họ và tên");
+        System.out.println("- Môn dạy");
+        System.out.println("- Trình độ (Cử nhân/ Thạc sĩ/ Tiến sĩ)");
+        System.out.println("- Kinh nghiệm (Năm)");
+        System.out.println("- Lớp chủ nghiệm");
+        System.out.println("- Số điện thoại");
+        System.out.println("- Email");
+        System.out.println("- Trạng thái (Đang dạy/ Nghỉ hưu/ Công tác)");
+
         pause();
     }
 }

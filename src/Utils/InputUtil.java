@@ -30,6 +30,20 @@ public class InputUtil {
         return input;
     }
 
+    public static String getEmail(String prompt) {
+        String email;
+        do {
+            email = getString(prompt);
+            Matcher matcher = EMAIL_PATTERN.matcher(email);
+            if (!matcher.matches()) {
+                System.out.println("Email không hợp lệ! Vui lòng nhập lại.");
+            } else {
+                break;
+            }
+        } while (true);
+        return email;
+    }
+
     public static int getInt(String prompt) {
         while (true) {
             try {
