@@ -11,9 +11,7 @@ import java.util.regex.Pattern;
 
 public class AddTeacherScreen extends AbstractScreen {
 
-    // Mẫu số điện thoại cơ bản (10-11 số)
     private static final Pattern PHONE_PATTERN = Pattern.compile("\\d{10,11}");
-    // Mẫu email
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
 
     @Override
