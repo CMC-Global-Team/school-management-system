@@ -9,10 +9,11 @@ public class UpdateClassRoomScreen extends AbstractScreen {
     @Override
     public void display() {
         clearScreen();
-        System.out.println("╔════════════════════════════════════════╗");
-        System.out.println("║        CẬP NHẬT LỚP HỌC               ║");
-        System.out.println("╚════════════════════════════════════════╝");
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│            CẬP NHẬT LỚP HỌC              │");
+        System.out.println("└──────────────────────────────────────────┘");
     }
+
 
     @Override
     public void handleInput() {

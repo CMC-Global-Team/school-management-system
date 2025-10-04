@@ -6,10 +6,11 @@ public class Teachercreate extends AbstractScreen {
 
     @Override
     public void display() {
-        System.out.println("===========================================");
-        System.out.println("          THEM GIAO VIEN MOI");
-        System.out.println("===========================================");
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│           THÊM GIÁO VIÊN MỚI             │");
+        System.out.println("└──────────────────────────────────────────┘");
     }
+
 
     @Override
     public void handleInput() {

@@ -20,16 +20,16 @@ public class ClassRoomMenu extends AbstractScreen {
 
     @Override
     public void display() {
-        System.out.println("===========================================");
-        System.out.println("       HE THONG QUAN LY LOP HOC");
-        System.out.println("===========================================");
-        System.out.println("  1. Them Lop Hoc Moi");
-        System.out.println("  2. Tim Kiem Lop Hoc");
-        System.out.println("  3. Cap Nhat Lop Hoc");
-        System.out.println("  4. Xoa Lop Hoc");
-        System.out.println("  5. Danh Sach Tat Ca Lop Hoc");
-        System.out.println("  0. Quay Lai Menu Chinh");
-        System.out.println("===========================================");
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│        HỆ THỐNG QUẢN LÝ LỚP HỌC          │");
+        System.out.println("├──────────────────────────────────────────┤");
+        System.out.println("│  1. Thêm Lớp Học Mới                     │");
+        System.out.println("│  2. Tìm Kiếm Lớp Học                     │");
+        System.out.println("│  3. Cập Nhật Lớp Học                     │");
+        System.out.println("│  4. Xóa Lớp Học                          │");
+        System.out.println("│  5. Danh Sách Tất Cả Lớp Học             │");
+        System.out.println("│  0. Quay Lại Menu Chính                  │");
+        System.out.println("└──────────────────────────────────────────┘");
     }
 
     @Override

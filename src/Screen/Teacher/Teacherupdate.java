@@ -6,9 +6,9 @@ public class Teacherupdate extends AbstractScreen {
 
     @Override
     public void display() {
-        System.out.println("===========================================");
-        System.out.println("          CAP NHAT GIAO VIEN");
-        System.out.println("===========================================");
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│           CẬP NHẬT GIÁO VIÊN             │");
+        System.out.println("└──────────────────────────────────────────┘");
     }
 
     @Override

@@ -9,9 +9,9 @@ public class ListClassRoomScreen extends AbstractScreen {
     @Override
     public void display() {
         clearScreen();
-        System.out.println("╔════════════════════════════════════════╗");
-        System.out.println("║      DANH SÁCH TẤT CẢ LỚP HỌC         ║");
-        System.out.println("╚════════════════════════════════════════╝");
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│        DANH SÁCH TẤT CẢ LỚP HỌC          │");
+        System.out.println("└──────────────────────────────────────────┘");
     }
 
     @Override

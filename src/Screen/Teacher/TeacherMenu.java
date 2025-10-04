@@ -16,17 +16,18 @@ public class TeacherMenu extends AbstractScreen {
 
     @Override
     public void display() {
-        System.out.println("===========================================");
-        System.out.println("       HE THONG QUAN LY GIAO VIEN");
-        System.out.println("===========================================");
-        System.out.println("  1. Them Giao Vien Moi");
-        System.out.println("  2. Cap Nhat Giao Vien");
-        System.out.println("  3. Xoa Giao Vien");
-        System.out.println("  4. Tim Kiem Giao Vien");
-        System.out.println("  5. Danh Sach Tat Ca Giao Vien");
-        System.out.println("  0. Quay Lai Menu Chinh");
-        System.out.println("===========================================");
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│       HỆ THỐNG QUẢN LÝ GIÁO VIÊN         │");
+        System.out.println("├──────────────────────────────────────────┤");
+        System.out.println("│  1. Thêm Giáo Viên Mới                   │");
+        System.out.println("│  2. Cập Nhật Giáo Viên                   │");
+        System.out.println("│  3. Xóa Giáo Viên                        │");
+        System.out.println("│  4. Tìm Kiếm Giáo Viên                   │");
+        System.out.println("│  5. Danh Sách Tất Cả Giáo Viên           │");
+        System.out.println("│  0. Quay Lại Menu Chính                  │");
+        System.out.println("└──────────────────────────────────────────┘");
     }
+
 
     @Override
     public void handleInput() {

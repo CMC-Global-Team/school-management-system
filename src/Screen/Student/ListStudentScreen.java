@@ -6,10 +6,11 @@ public class ListStudentScreen extends AbstractScreen {
 
     @Override
     public void display() {
-        System.out.println("===========================================");
-        System.out.println("      DANH SACH TAT CA HOC SINH");
-        System.out.println("===========================================");
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│       DANH SÁCH TẤT CẢ HỌC SINH          │");
+        System.out.println("└──────────────────────────────────────────┘");
     }
+
 
     @Override
     public void handleInput() {

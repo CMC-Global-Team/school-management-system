@@ -20,17 +20,18 @@ public class StudentMenu extends AbstractScreen {
 
     @Override
     public void display() {
-        System.out.println("===========================================");
-        System.out.println("       HE THONG QUAN LY HOC SINH");
-        System.out.println("===========================================");
-        System.out.println("  1. Them Hoc Sinh Moi");
-        System.out.println("  2. Tim Kiem Hoc Sinh");
-        System.out.println("  3. Cap Nhat Hoc Sinh");
-        System.out.println("  4. Xoa Hoc Sinh");
-        System.out.println("  5. Danh Sach Tat Ca Hoc Sinh");
-        System.out.println("  0. Quay Lai Menu Chinh");
-        System.out.println("===========================================");
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│        HỆ THỐNG QUẢN LÝ HỌC SINH         │");
+        System.out.println("├──────────────────────────────────────────┤");
+        System.out.println("│  1. Thêm Học Sinh Mới                    │");
+        System.out.println("│  2. Tìm Kiếm Học Sinh                    │");
+        System.out.println("│  3. Cập Nhật Thông Tin Học Sinh          │");
+        System.out.println("│  4. Xóa Học Sinh                         │");
+        System.out.println("│  5. Danh Sách Tất Cả Học Sinh            │");
+        System.out.println("│  0. Quay Lại Menu Chính                  │");
+        System.out.println("└──────────────────────────────────────────┘");
     }
+
 
     @Override
     public void handleInput() {

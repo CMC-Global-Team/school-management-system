@@ -6,9 +6,9 @@ public class Teacherdelete extends AbstractScreen {
 
     @Override
     public void display() {
-        System.out.println("===========================================");
-        System.out.println("            XOA GIAO VIEN");
-        System.out.println("===========================================");
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│              XÓA GIÁO VIÊN               │");
+        System.out.println("└──────────────────────────────────────────┘");
     }
 
     @Override

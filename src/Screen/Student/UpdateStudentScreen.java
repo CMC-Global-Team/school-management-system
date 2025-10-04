@@ -6,9 +6,9 @@ public class UpdateStudentScreen extends AbstractScreen {
 
     @Override
     public void display() {
-        System.out.println("===========================================");
-        System.out.println("          CAP NHAT HOC SINH");
-        System.out.println("===========================================");
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│            CẬP NHẬT HỌC SINH             │");
+        System.out.println("└──────────────────────────────────────────┘");
     }
 
     @Override

@@ -6,9 +6,9 @@ public class DeleteStudentScreen extends AbstractScreen {
 
     @Override
     public void display() {
-        System.out.println("===========================================");
-        System.out.println("            XOA HOC SINH");
-        System.out.println("===========================================");
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│               XÓA HỌC SINH               │");
+        System.out.println("└──────────────────────────────────────────┘");
     }
 
     @Override

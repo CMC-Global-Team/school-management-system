@@ -12,10 +12,11 @@ public class AddClassRoomScreen extends AbstractScreen {
     @Override
     public void display() {
         clearScreen();
-        System.out.println("╔════════════════════════════════════════╗");
-        System.out.println("║         THÊM LỚP HỌC MỚI              ║");
-        System.out.println("╚════════════════════════════════════════╝");
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│            THÊM LỚP HỌC MỚI              │");
+        System.out.println("└──────────────────────────────────────────┘");
     }
+
 
     @Override
     public void handleInput() {

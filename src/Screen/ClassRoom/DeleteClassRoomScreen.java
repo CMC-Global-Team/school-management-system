@@ -9,10 +9,11 @@ public class DeleteClassRoomScreen extends AbstractScreen {
     @Override
     public void display() {
         clearScreen();
-        System.out.println("╔════════════════════════════════════════╗");
-        System.out.println("║          XÓA LỚP HỌC                  ║");
-        System.out.println("╚════════════════════════════════════════╝");
+        System.out.println("┌──────────────────────────────────────────┐");
+        System.out.println("│               XÓA LỚP HỌC                │");
+        System.out.println("└──────────────────────────────────────────┘");
     }
+
 
     @Override
     public void handleInput() {
