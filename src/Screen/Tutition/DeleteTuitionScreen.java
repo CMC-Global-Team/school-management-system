@@ -13,5 +13,7 @@ public class DeleteTuitionScreen extends AbstractScreen {
     @Override
     public void handleInput() {
         System.out.println("\n[Thong bao] Chuc nang xoa thong tin hoc phi dang duoc phat trien...");
+        pause();
     }
 }
+
