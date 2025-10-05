@@ -23,5 +23,7 @@ public class EditTuitionScreen extends AbstractScreen {
         System.out.println("- Phuong thuc");
         System.out.println("- Trang thai");
         System.out.println("- Ghi chu");
+        pause();
     }
 }
+
