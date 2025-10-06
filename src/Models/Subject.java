@@ -91,7 +91,7 @@ public class Subject {
 
     @Override
     public String toString() {
-        return subjectID + "," + "," + subjectName + "," + lessonCount + "," + confficient + "," + subjectType +
+        return subjectID + "," + subjectName + "," + lessonCount + "," + confficient + "," + subjectType +
                 "," + description + "," + teacherInCharge + "," + status;
     }
 
