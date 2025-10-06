@@ -1,17 +1,18 @@
-package Tutition;
+package Screen.Tuition;
 
 import Screen.AbstractScreen;
 
-public class DeleteTutition extends AbstractScreen {
+public class FinancialReportScreen extends AbstractScreen {
     @Override
     public void display() {
         System.out.println("┌──────────────────────────────────────────┐");
-        System.out.println("│         Xoá Thông Tin Học Phí            │");
+        System.out.println("│         Báo cáo tài chính                │");
         System.out.println("└──────────────────────────────────────────┘");
     }
 
     @Override
     public void handleInput() {
-        System.out.println("\n[Thong bao] Chuc nang xoa thong tin hoc phi dang duoc phat trien...");
+        System.out.println("\n[Thong bao] Chuc nang bao cao tai chinh dang duoc phat trien...");
+        pause();
     }
 }

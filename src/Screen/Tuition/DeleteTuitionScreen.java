@@ -1,19 +1,18 @@
-package Tutition;
+package Screen.Tuition;
 
 import Screen.AbstractScreen;
 
-import javax.swing.*;
-
-public class TuitionDiscountScreen extends AbstractScreen {
+public class DeleteTuitionScreen extends AbstractScreen {
     @Override
     public void display() {
         System.out.println("┌──────────────────────────────────────────┐");
-        System.out.println("│         Miễn Giảm Học Phí                │");
+        System.out.println("│         Xoá Thông Tin Học Phí            │");
         System.out.println("└──────────────────────────────────────────┘");
     }
 
     @Override
     public void handleInput() {
-        System.out.println("\n[Thong bao] Chuc nang mien giam hoc phi dang duoc phat trien...");
+        System.out.println("\n[Thong bao] Chuc nang xoa thong tin hoc phi dang duoc phat trien...");
+        pause();
     }
 }

@@ -1,28 +1,27 @@
-package Tutition;
+package Screen.Tuition;
 
 import Screen.AbstractScreen;
-import Screen.Grade.DeleteGradeScreen;
-import Screen.Grade.EditGradeScreen;
-import Screen.Grade.ExportScreen;
-import Screen.Grade.SearchForStudentGradesScreen;
 
-public class MenuTutition extends AbstractScreen {
-    private final RecordTutitionScreen recordTutitionScreen;
-    private final EditGradeScreen editGradeScreen;
-    private final DeleteGradeScreen deleteGradeScreen;
-    private final SearchForStudentGradesScreen searchForStudentGradesScreen;
+
+
+public class MenuTuition extends AbstractScreen {
+    private final RecordTuitionScreen recordTuitionScreen;
+    private final EditTuitionScreen editTuitionScreen;
+    private final DeleteTuitionScreen deleteTuitionScreen;
+    private final SearchForTuition searchForTuition;
     private final TuitionDiscountScreen tuitionDiscountScreen;
     private final FinancialReportScreen financialReportScreen;
-    private final ExportTutionListScreen exportTutionListScreen;
-   public MenuTutition() {
+    private final ExportTuitionListScreen exportTuitionListScreen;
+   public MenuTuition() {
        super();
-        this.recordTutitionScreen = new RecordTutitionScreen();
-        this.editGradeScreen = new EditGradeScreen();
-        this.deleteGradeScreen = new DeleteGradeScreen();
-        this.searchForStudentGradesScreen = new SearchForStudentGradesScreen();
+        this.recordTuitionScreen = new RecordTuitionScreen();
+        this.editTuitionScreen = new EditTuitionScreen();
+        this.deleteTuitionScreen = new DeleteTuitionScreen();
+        this.searchForTuition = new SearchForTuition();
         this.tuitionDiscountScreen = new TuitionDiscountScreen();
         this.financialReportScreen = new FinancialReportScreen();
-        this.exportTutionListScreen = new ExportTutionListScreen();
+        this.exportTuitionListScreen = new ExportTuitionListScreen();
+
 
    }
     @Override
@@ -51,32 +50,32 @@ public class MenuTutition extends AbstractScreen {
 
             switch (choice) {
                 case 1:
-                  recordTutitionScreen.display();
-                  recordTutitionScreen.handleInput();
+                  recordTuitionScreen.display();
+                  recordTuitionScreen.handleInput();
                     break;
                 case 2:
-                    editGradeScreen.display();
-                    editGradeScreen.handleInput();
+                   editTuitionScreen.handleInput();
+                   editTuitionScreen.display();
                     break;
                 case 3:
-                    deleteGradeScreen.display();
-                    deleteGradeScreen.handleInput();
+                    deleteTuitionScreen.handleInput();
+                    deleteTuitionScreen.display();
                     break;
                 case 4:
-                    searchForStudentGradesScreen.display();
-                    searchForStudentGradesScreen.handleInput();
+                    searchForTuition.handleInput();
+                    searchForTuition.display();
                     break;
                 case 5:
-                    tuitionDiscountScreen.display();
                     tuitionDiscountScreen.handleInput();
+                    tuitionDiscountScreen.display();
                     break;
                 case 6:
-                   financialReportScreen.display();
                    financialReportScreen.handleInput();
+                   financialReportScreen.display();
                     break;
                 case 7:
-                    exportTutionListScreen.display();
-                    exportTutionListScreen.handleInput();
+                    exportTuitionListScreen.handleInput();
+                    exportTuitionListScreen.display();
                     break;
                 case 0:
                     System.out.println("\nDang quay lai menu chinh...");

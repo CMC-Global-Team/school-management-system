@@ -1,8 +1,8 @@
-package Tutition;
+package Screen.Tuition;
 
 import Screen.AbstractScreen;
 
-public class SearchForTution extends AbstractScreen {
+public class SearchForTuition extends AbstractScreen {
     @Override
     public void display() {
         System.out.println("┌──────────────────────────────────────────┐");
@@ -13,5 +13,6 @@ public class SearchForTution extends AbstractScreen {
     @Override
     public void handleInput() {
         System.out.println("\n[Thong bao] Chuc nang Tra cuu thong tin hoc phi dang duoc phat trien...");
+        pause();
     }
 }

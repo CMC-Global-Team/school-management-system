@@ -1,10 +1,12 @@
 package Screen.Grade;
 
-import Screen.AbstractScreen;
-import Screen.Student.*;
 
-public class Menu extends AbstractScreen {
-    private final EnterGradeScreen enterGradeScreen;
+
+import Screen.AbstractScreen;
+
+
+public class MenuGrade extends AbstractScreen {
+    private final EnterGradeScreen enterGradeScreen ;
     private final EditGradeScreen editGradeScreen;
     private final DeleteGradeScreen deleteGradeScreen;
     private final SearchForStudentGradesScreen searchForStudentGradesScreen;
@@ -13,7 +15,7 @@ public class Menu extends AbstractScreen {
     private final ReportScreen reportScreen;
     private final ExportScreen exportScreen;
 
-    public Menu() {
+    public MenuGrade() {
         super();
         this.enterGradeScreen = new EnterGradeScreen();
         this.editGradeScreen = new EditGradeScreen();
@@ -52,8 +54,8 @@ public class Menu extends AbstractScreen {
 
             switch (choice) {
                 case 1:
-                   enterGradeScreen.display();
-                   enterGradeScreen.handleInput();
+                    enterGradeScreen.display();
+                    enterGradeScreen.handleInput();
                     break;
                 case 2:
                     editGradeScreen.display();
@@ -68,8 +70,8 @@ public class Menu extends AbstractScreen {
                     searchForStudentGradesScreen.handleInput();
                     break;
                 case 5:
-                   averageGradeScreen.display();
-                   averageGradeScreen.handleInput();
+                    averageGradeScreen.display();
+                    averageGradeScreen.handleInput();
                     break;
                 case 6:
                     gradeClassificationScreen.display();
@@ -80,8 +82,8 @@ public class Menu extends AbstractScreen {
                     reportScreen.handleInput();
                     break;
                 case 8:
-                   exportScreen.display();
-                   exportScreen.handleInput();
+                    exportScreen.display();
+                    exportScreen.handleInput();
                     break;
                 case 0:
                     System.out.println("\nDang quay lai menu chinh...");

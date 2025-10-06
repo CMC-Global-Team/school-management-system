@@ -1,19 +1,25 @@
 package Screen;
 
 import Screen.ClassRoom.ClassRoomMenu;
+import Screen.Grade.MenuGrade;
 import Screen.Student.StudentMenu;
 import Screen.Teacher.MenuTeacherScreen;
+import Screen.Tuition.MenuTuition;
 
 public class DashBoard extends AbstractScreen {
     private final ClassRoomMenu classRoomMenu;
     private final MenuTeacherScreen teacherMenu;
     private final StudentMenu studentMenu;
+    private final MenuGrade menuGrade;
+    private final MenuTuition  menuTuition;
 
     public DashBoard() {
         super();
         this.classRoomMenu = new ClassRoomMenu();
         this.teacherMenu = new MenuTeacherScreen();
         this.studentMenu = new StudentMenu();
+        this.menuGrade = new MenuGrade();
+        this.menuTuition = new MenuTuition();
     }
 
     @Override
@@ -48,8 +54,7 @@ public class DashBoard extends AbstractScreen {
                     pause();
                     break;
                 case 3:
-                    System.out.println("\nChuc nang Quan Ly Diem dang duoc phat trien...");
-                    pause();
+                    menuGrade.handleInput();
                     break;
                 case 4:
                     studentMenu.handleInput();
@@ -58,8 +63,7 @@ public class DashBoard extends AbstractScreen {
                     teacherMenu.handleInput();
                     break;
                 case 6:
-                    System.out.println("\nChuc nang Quan Ly Hoc Phi dang duoc phat trien...");
-                    pause();
+                    menuTuition.handleInput();
                     break;
                 case 0:
                     System.out.println("\nCam on ban da su dung he thong. Tam biet!");
