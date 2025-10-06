@@ -1,5 +1,15 @@
 package Screen.Grade;
+
+import Models.Grade;
+import Models.Student;
+import Models.Subject;
 import Screen.AbstractScreen;
+import Utils.FileUtil;
+import Utils.InputUtil;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class EnterGradeScreen extends  AbstractScreen {
     @Override
     public void display() {
@@ -10,17 +20,110 @@ public class EnterGradeScreen extends  AbstractScreen {
 
     @Override
     public void handleInput() {
-        System.out.println("\n[Thong bao] Chuc nang nhap diem cho Hoc Sinh dang duoc phat trien...");
-        System.out.println("Cac thong tin se bao gom:");
-        System.out.println("- Ma hoc sinh");
-        System.out.println("- Ma diem");
-        System.out.println("- Ma mon hoc");
-        System.out.println("- Loai diem");
-        System.out.println("- So diem dat duoc");
-        System.out.println("- Hoc ki");
-        System.out.println("- Nam hoc");
-        System.out.println("- Ngay nhap");
-        System.out.println("- Ghi chu");
-        pause();
+        List<String> studentLines = new ArrayList<>();
+        List<String> subjectLines = new ArrayList<>();
+        List<String> gradeLines = new ArrayList<>();
+
+        try {
+            if (FileUtil.fileExists("src/Data/students.txt")) {
+                studentLines = FileUtil.readLines("src/Data/students.txt");
+            } else {
+                System.out.println("Không tìm thấy file học sinh!");
+                pause();
+                return;
+            }
+            if (FileUtil.fileExists("src/Data/subjects.txt")){
+                subjectLines = FileUtil.readLines("src/Data/subjects.txt");
+            } else {
+                System.out.println("Không tìm thấy file môn học!");
+                pause();
+                return;
+            }
+            if (FileUtil.fileExists("src/Data/grades.txt")) {
+                gradeLines = FileUtil.readLines("src/Data/grades.txt");
+            } else {
+                System.out.println("Không tìm thấy file điểm số!");
+                pause();
+                return;
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi khi đọc file môn học/điểm số/học sinh: " + e.getMessage());
+            pause();
+            return;
+        }
+
+        String studentID = InputUtil.getNonEmptyString("Mã học sinh: ");
+            if (isExistStudentID(studentID,  studentLines)) {
+                System.out.println("Không tìm thấy học sinh có mã: " + studentID);
+                pause();
+                return;
+            }
+        String subjectID = InputUtil.getNonEmptyString("Mã môn học: ");
+            if (!isExistSubjectID(subjectID, subjectLines)) {
+                System.out.println("Không tìm thấy môn học có mã: " + subjectID);
+                pause();
+                return;
+            }
+        String gradeID = InputUtil.getNonEmptyString("Mã điểm: ");
+            if (isExistGradeID(gradeID, gradeLines)) {
+                System.out.println("Mã điểm " + subjectID + " đã tồn tại!");
+                pause();
+                return;
+            }
+        String gradeType = InputUtil.getNonEmptyString("Loại điểm: ");
+        double score = InputUtil.getDouble("Điểm số: ");
+        int gradeSemester = InputUtil.getInt("Học kỳ: ");
+        String gradeSchoolYear = InputUtil.getNonEmptyString("Năm học: ");
+        LocalDate inputDate =  LocalDate.now();
+        String gradeNote = InputUtil.getString("Ghi chú: ");
+
+        Grade newGrade = new Grade(gradeID, studentID, subjectID, gradeType, score, gradeSemester, gradeSchoolYear, inputDate, gradeNote);
+        gradeLines.add(newGrade.toString());
+        // Save file
+        try {
+            FileUtil.writeLines("src/Data/grades.txt", gradeLines);
+            System.out.println("\nĐã lưu điểm thành công!");
+            pause();
+        } catch (Exception e) {
+            System.out.println("Lỗi khi lưu file: " + e.getMessage());
+        }
+    }
+
+    public static boolean isExistStudentID(String studentID, List<String> studentLines) {
+        for (String line : studentLines) {
+            Student student = Student.fromString(line);
+            if (student != null && student.getId().equalsIgnoreCase(studentID)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isExistSubjectID(String subjectID, List<String> subjectLines) {
+        for (String line : subjectLines) {
+            Subject subject = Subject.fromString(line);
+            if (subject != null && subject.getSubjectID().equalsIgnoreCase(subjectID)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isExistGradeID(String gradeID, List<String> gradeLines) {
+        for (String line : gradeLines) {
+            Grade grade = Grade.fromString(line);
+            if (grade != null && grade.getGradeId().equalsIgnoreCase(gradeID)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static Grade getGradeByID(String gradeID, List<String> gradeLines) {
+        for (String line : gradeLines) {
+            Grade grade = Grade.fromString(line);
+            if (grade != null && grade.getGradeId().equalsIgnoreCase(gradeID)) {
+                return grade;
+            }
+        }
+        return null;
     }
 }

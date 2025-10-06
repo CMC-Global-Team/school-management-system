@@ -1,8 +1,15 @@
 package Screen.Grade;
 
+import Models.Grade;
 import Screen.AbstractScreen;
+import Utils.FileUtil;
+import Utils.InputUtil;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DeleteGradeScreen extends AbstractScreen {
+    private static final String FILE_PATH = "src/Data/grades.txt";
+
     @Override
     public void display() {
         System.out.println("┌──────────────────────────────────────────┐");
@@ -12,16 +19,40 @@ public class DeleteGradeScreen extends AbstractScreen {
 
     @Override
     public void handleInput() {
-        System.out.println("\n[Thong bao] Chuc nang xoa diem cho Hoc Sinh dang duoc phat trien...");
-        System.out.println("Cac thong tin se bao gom:");
-        System.out.println("- Ma hoc sinh");
-        System.out.println("- Ma diem");
-        System.out.println("- Ma mon hoc");
-        System.out.println("- Loai diem");
-        System.out.println("- Diem Can Xoa");
-        System.out.println("- Hoc ki");
-        System.out.println("- Nam hoc");
-        System.out.println("- Ghi chu");
-        pause();
+        List<String> gradeLines = new ArrayList<>();
+        List<String> remains = new ArrayList<>();
+        try {
+            if(FileUtil.fileExists("src/Data/grades.txt")) {
+                gradeLines = FileUtil.readLines("src/Data/grades.txt");
+            }else {
+                System.out.println("Không tìm thấy file học sinh!");
+                pause();
+                return;
+            }
+            boolean deleted = false;
+            String gradeID = InputUtil.getString("Nhập mã điểm cần xoá(Enter để huỷ): ");
+            if(!gradeID.isEmpty() && EnterGradeScreen.isExistGradeID(gradeID, gradeLines)) {
+                for (String line : gradeLines) {
+                    Grade g = Grade.fromString(line);
+                    if (g.getGradeId().equals(gradeID)) {
+                        deleted = true;
+
+                    } else {
+                        remains.add(line);
+                    }
+                }
+            }else {
+                deleted = false;
+                System.out.println("Không tìm thấy điểm có mã: " + gradeID);
+            }
+            if(deleted && InputUtil.getBoolean("Bạn có chắc muốn xoá điểm này? ")){
+                FileUtil.writeLines(FILE_PATH, remains);
+                System.out.println("Đã xoá điểm có mã:" + gradeID);
+            }
+            pause();
+        }catch (Exception e){
+            System.out.println("Lỗi khi đọc/ghi file điểm số: " + e.getMessage());
+            pause();
+        }
     }
 }
