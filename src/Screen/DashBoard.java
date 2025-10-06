@@ -4,7 +4,7 @@ import Screen.ClassRoom.ClassRoomMenu;
 import Screen.Grade.MenuGrade;
 import Screen.Student.StudentMenu;
 import Screen.Teacher.MenuTeacherScreen;
-import Screen.Tutition.MenuTuition;
+import Screen.Tuition.MenuTuition;
 
 public class DashBoard extends AbstractScreen {
     private final ClassRoomMenu classRoomMenu;
