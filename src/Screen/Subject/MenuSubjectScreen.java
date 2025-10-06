@@ -8,6 +8,8 @@ public class MenuSubjectScreen extends AbstractScreen {
     private final DeleteSubjectScreen deleteScreen;
     private final SearchSubjectScreen searchScreen;
     private final ListSubjectScreen listScreen;
+    private final AssignTeacherScreen assignTeacherScreen;
+    private final EditSubjectScreen editSubjectScreen;
 
     public MenuSubjectScreen() {
         super();
@@ -16,6 +18,8 @@ public class MenuSubjectScreen extends AbstractScreen {
         this.deleteScreen = new DeleteSubjectScreen();
         this.searchScreen = new SearchSubjectScreen();
         this.listScreen = new ListSubjectScreen();
+        this.assignTeacherScreen = new AssignTeacherScreen();
+        this.editSubjectScreen = new EditSubjectScreen();
     }
 
     @Override
@@ -27,7 +31,9 @@ public class MenuSubjectScreen extends AbstractScreen {
         System.out.println("│  2. Cập Nhật Môn Học                     │");
         System.out.println("│  3. Xóa Môn Học                          │");
         System.out.println("│  4. Tìm Kiếm Môn Học                     │");
-        System.out.println("│  5. Danh Sách Tất Cả Môn Học             │");
+        System.out.println("│  5. Gán Giáo Viên Cho Môn Học            │");
+        System.out.println("│  6. Chỉnh sửa Chương trình học           │");
+        System.out.println("│  7. Danh Sách Tất Cả Môn Học             │");
         System.out.println("│  0. Quay Lại Menu Chính                  │");
         System.out.println("└──────────────────────────────────────────┘");
     }
@@ -58,6 +64,16 @@ public class MenuSubjectScreen extends AbstractScreen {
                     searchScreen.handleInput();
                     break;
                 case 5:
+                    assignTeacherScreen.display();
+                    assignTeacherScreen.handleInput();
+                    pause();
+                    break;
+                case 6:
+                    editSubjectScreen.display();
+                    editSubjectScreen.handleInput();
+                    pause();
+                    break;
+                case 7:
                     listScreen.display();
                     listScreen.handleInput();
                     pause();
