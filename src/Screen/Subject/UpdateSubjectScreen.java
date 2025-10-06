@@ -6,8 +6,8 @@ import Utils.FileUtil;
 import Utils.InputUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UpdateSubjectScreen extends AbstractScreen {
 
@@ -16,80 +16,50 @@ public class UpdateSubjectScreen extends AbstractScreen {
     @Override
     public void display() {
         System.out.println("┌──────────────────────────────────────────┐");
-        System.out.println("│        CẬP NHẬT THÔNG TIN MÔN HỌC        │");
+        System.out.println("│           CẬP NHẬT MÔN HỌC               │");
         System.out.println("└──────────────────────────────────────────┘");
     }
 
     @Override
     public void handleInput() {
+        String id = InputUtil.getNonEmptyString("Nhập mã môn học cần cập nhật: ");
+
         try {
             List<String> lines = FileUtil.readLines(FILE_PATH);
-            List<Subject> subjects = lines.stream()
-                    .map(Subject::fromString)
-                    .toList();
+            List<String> updated = new ArrayList<>();
+            boolean found = false;
 
-            if (subjects.isEmpty()) {
-                System.out.println("Hiện chưa có môn học nào trong hệ thống!");
-                pause();
-                return;
-            }
+            for (String line : lines) {
+                Subject s = Subject.fromString(line);
+                if (s != null && s.getSubjectID().equalsIgnoreCase(id)) {
+                    found = true;
+                    System.out.println("Đang cập nhật môn: " + s.getSubjectName());
+                    String newName = InputUtil.getString("Tên mới (Enter để giữ nguyên): ");
+                    if (!newName.isEmpty()) s.setSubjectName(newName);
 
-            String id = InputUtil.getNonEmptyString("Nhập mã môn học cần cập nhật: ");
-            Subject s = subjects.stream()
-                    .filter(x -> x.getSubjectID().equalsIgnoreCase(id))
-                    .findFirst()
-                    .orElse(null);
+                    String newDesc = InputUtil.getString("Mô tả mới (Enter để giữ nguyên): ");
+                    if (!newDesc.isEmpty()) s.setDescription(newDesc);
 
-            if (s == null) {
-                System.out.println("Không tìm thấy môn học với mã này!");
-                pause();
-                return;
-            }
+                    String newStatus = InputUtil.getString("Trạng thái mới (Enter để giữ nguyên): ");
+                    if (!newStatus.isEmpty()) s.setStatus(newStatus);
 
-            System.out.println("Thông tin hiện tại: " + s);
-
-            String name = InputUtil.getString("Tên mới (" + s.getSubjectName() + "): ");
-            if (!name.isEmpty()) s.setSubjectName(name);
-
-            String lessonCount = InputUtil.getString("Số tiết học (" + s.getLessonCount() + "): ");
-            if (!lessonCount.isEmpty()) {
-                try {
-                    s.setLessonCount(Integer.parseInt(lessonCount));
-                } catch (NumberFormatException e) {
-                    System.out.println("Số tiết học không hợp lệ, giữ nguyên giá trị cũ!");
+                    updated.add(s.toString());
+                } else {
+                    updated.add(line);
                 }
             }
 
-            String confficient = InputUtil.getString("Hệ số (" + s.getSubjectName() + "): ");
-            if (!confficient.isEmpty()) {
-                try {
-                    s.setConfficient(Double.parseDouble(lessonCount));
-                } catch (NumberFormatException e) {
-                    System.out.println("Hệ số không hợp lệ, giữ nguyên giá trị cũ!");
-                }
+            if (found) {
+                FileUtil.writeLines(FILE_PATH, updated);
+                System.out.println("Cập nhật thành công!");
+            } else {
+                System.out.println("Không tìm thấy môn học!");
             }
 
-            String subjectType = InputUtil.getString("Loại môn (" + s.getSubjectName() + "): ");
-            if (!subjectType.isEmpty()) s.setSubjectType(subjectType);
-
-            String description = InputUtil.getString("Mô tả (" + s.getDescription() + "): ");
-            if (!description.isEmpty()) s.setDescription(description);
-
-            String teacherInCharge = InputUtil.getString("Giáo viên phụ trách (" + s.getSubjectName() + "): ");
-            if (!teacherInCharge.isEmpty()) s.setDescription(teacherInCharge);
-
-            String status = InputUtil.getString("Trạng thái (" + s.getSubjectName() + "): ");
-            if (!status.isEmpty()) s.setStatus(status);
-
-            // Save file
-            List<String> newLines = subjects.stream().map(Subject::toString).collect(Collectors.toList());
-            FileUtil.writeLines(FILE_PATH, newLines);
-
-            System.out.println("Cập nhật thông tin môn học thành công!");
         } catch (IOException e) {
-            System.err.println("Lỗi khi đọc/ghi file: " + e.getMessage());
+            System.out.println("Lỗi cập nhật: " + e.getMessage());
         }
 
-        pause();
+        InputUtil.pressEnterToContinue();
     }
 }

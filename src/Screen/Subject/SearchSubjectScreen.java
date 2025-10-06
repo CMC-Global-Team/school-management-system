@@ -1,4 +1,5 @@
 package Screen.Subject;
+
 import Models.Subject;
 import Screen.AbstractScreen;
 import Utils.FileUtil;
@@ -6,7 +7,6 @@ import Utils.InputUtil;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SearchSubjectScreen extends AbstractScreen {
 
@@ -15,65 +15,33 @@ public class SearchSubjectScreen extends AbstractScreen {
     @Override
     public void display() {
         System.out.println("┌──────────────────────────────────────────┐");
-        System.out.println("│             TÌM KIẾM MÔN HỌC             │");
+        System.out.println("│           TÌM KIẾM MÔN HỌC               │");
         System.out.println("└──────────────────────────────────────────┘");
     }
+
     @Override
     public void handleInput() {
+        String keyword = InputUtil.getNonEmptyString("Nhập tên hoặc mã môn học: ").toLowerCase();
+
         try {
             List<String> lines = FileUtil.readLines(FILE_PATH);
-            List<Subject> subjects = lines.stream()
-                    .map(Subject::fromString)
-                    .toList();
+            boolean found = false;
 
-            if (subjects.isEmpty()) {
-                System.out.println("Hiện chưa có môn học nào trong hệ thống!");
-                pause();
-                return;
-            }
-
-            System.out.println("1. Tìm theo mã");
-            System.out.println("2. Tìm theo tên");
-            System.out.println("3. Tìm theo loại môn");
-            int choice = InputUtil.getInt("Chọn: ");
-
-            List<Subject> results = null;
-            switch (choice) {
-                case 1 -> {
-                    String id = InputUtil.getNonEmptyString("Nhập mã: ");
-                    results = subjects.stream()
-                            .filter(t -> t.getSubjectID().equalsIgnoreCase(id))
-                            .collect(Collectors.toList());
-                }
-                case 2 -> {
-                    String name = InputUtil.getNonEmptyString("Nhập tên: ");
-                    results = subjects.stream()
-                            .filter(t -> t.getSubjectName().toLowerCase().contains(name.toLowerCase()))
-                            .collect(Collectors.toList());
-                }
-                case 3 -> {
-                    String subjectType = InputUtil.getNonEmptyString("Nhập loại môn: ");
-                    results = subjects.stream()
-                            .filter(t -> t.getSubjectType().equalsIgnoreCase(subjectType))
-                            .collect(Collectors.toList());
-                }
-                default -> {
-                    System.out.println("Lựa chọn không hợp lệ!");
-                    pause();
-                    return;
+            for (String line : lines) {
+                Subject s = Subject.fromString(line);
+                if (s != null && (s.getSubjectID().equalsIgnoreCase(keyword)
+                        || s.getSubjectName().toLowerCase().contains(keyword))) {
+                    System.out.println("→ " + s);
+                    found = true;
                 }
             }
 
-            if (results == null || results.isEmpty()) {
-                System.out.println("Không tìm thấy môn học phù hợp!");
-            } else {
-                System.out.println("Kết quả tìm kiếm:");
-                results.forEach(System.out::println);
-            }
+            if (!found) System.out.println("Không tìm thấy môn học phù hợp.");
+
         } catch (IOException e) {
-            System.err.println("Lỗi khi đọc file: " + e.getMessage());
+            System.out.println("Lỗi khi tìm kiếm: " + e.getMessage());
         }
 
-        pause();
+        InputUtil.pressEnterToContinue();
     }
 }

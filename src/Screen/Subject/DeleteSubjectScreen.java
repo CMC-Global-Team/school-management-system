@@ -8,7 +8,6 @@ import Utils.InputUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DeleteSubjectScreen extends AbstractScreen {
 
@@ -17,45 +16,40 @@ public class DeleteSubjectScreen extends AbstractScreen {
     @Override
     public void display() {
         System.out.println("┌──────────────────────────────────────────┐");
-        System.out.println("│                XÓA MÔN HỌC               │");
+        System.out.println("│             XÓA MÔN HỌC                  │");
         System.out.println("└──────────────────────────────────────────┘");
     }
 
     @Override
     public void handleInput() {
+        String id = InputUtil.getNonEmptyString("Nhập mã môn học cần xóa: ");
+
         try {
             List<String> lines = FileUtil.readLines(FILE_PATH);
-            List<Subject> subjects = new ArrayList<>(
-                    lines.stream()
-                            .map(Subject::fromString)
-                            .toList()
-            );
+            List<String> remaining = new ArrayList<>();
+            boolean found = false;
 
-            if (subjects.isEmpty()) {
-                System.out.println("Hiện chưa có môn học nào trong hệ thống!");
-                pause();
-                return;
+            for (String line : lines) {
+                Subject s = Subject.fromString(line);
+                if (s != null && s.getSubjectID().equalsIgnoreCase(id)) {
+                    found = true;
+                    System.out.println("Xóa môn: " + s.getSubjectName());
+                } else {
+                    remaining.add(line);
+                }
             }
 
-            String id = InputUtil.getNonEmptyString("Nhập mã môn học cần xóa: ");
-            Subject s = subjects.stream()
-                    .filter(x -> x.getSubjectID().equalsIgnoreCase(id))
-                    .findFirst()
-                    .orElse(null);
-
-            if (s == null) {
-                System.out.println("Không tìm môn học với mã này!");
+            if (found) {
+                FileUtil.writeLines(FILE_PATH, remaining);
+                System.out.println("Đã xóa thành công!");
             } else {
-                subjects.remove(s);
-                // Save file
-                List<String> newLines = subjects.stream().map(Subject::toString).collect(Collectors.toList());
-                FileUtil.writeLines(FILE_PATH, newLines);
-                System.out.println("Đã xóa môn học thành công!");
+                System.out.println("Không tìm thấy môn học!");
             }
+
         } catch (IOException e) {
-            System.err.println("Lỗi khi đọc/ghi file: " + e.getMessage());
+            System.out.println("Lỗi khi xóa: " + e.getMessage());
         }
 
-        pause();
+        InputUtil.pressEnterToContinue();
     }
 }

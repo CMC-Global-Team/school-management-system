@@ -3,19 +3,19 @@ package Screen.Subject;
 import Screen.AbstractScreen;
 
 public class MenuSubjectScreen extends AbstractScreen {
-    //private final AddSubjectScreen createScreen;
-    //private final UpdateSubjectScreen updateScreen;
-    //private final DeleteSubjectScreen deleteScreen;
-    //private final SearchSubjectScreen searchScreen;
-    //private final ListSubjectScreen listScreen;
+    private final AddSubjectScreen createScreen;
+    private final UpdateSubjectScreen updateScreen;
+    private final DeleteSubjectScreen deleteScreen;
+    private final SearchSubjectScreen searchScreen;
+    private final ListSubjectScreen listScreen;
 
     public MenuSubjectScreen() {
         super();
-        //this.createScreen = new AddSubjectScreen();
-        //this.updateScreen = new UpdateSubjectScreen();
-        //this.deleteScreen = new DeleteSubjectScreen();
-        //this.searchScreen = new SearchSubjectScreen();
-        //this.listScreen = new ListSubjectScreen();
+        this.createScreen = new AddSubjectScreen();
+        this.updateScreen = new UpdateSubjectScreen();
+        this.deleteScreen = new DeleteSubjectScreen();
+        this.searchScreen = new SearchSubjectScreen();
+        this.listScreen = new ListSubjectScreen();
     }
 
     @Override
@@ -42,24 +42,24 @@ public class MenuSubjectScreen extends AbstractScreen {
 
             switch (choice) {
                 case 1:
-                    System.out.println("/nĐang trong quá trình phát triển!");
-
+                    createScreen.display();
+                    createScreen.handleInput();
                     break;
                 case 2:
-                    System.out.println("/nĐang trong quá trình phát triển!");
-
+                    updateScreen.display();
+                    updateScreen.handleInput();
                     break;
                 case 3:
-                    //deleteScreen.display();
-                    //deleteScreen.handleInput();
+                    deleteScreen.display();
+                    deleteScreen.handleInput();
                     break;
                 case 4:
-                    //searchScreen.display();
-                    //searchScreen.handleInput();
+                    searchScreen.display();
+                    searchScreen.handleInput();
                     break;
                 case 5:
-                    //listScreen.display();
-                    //listScreen.handleInput();
+                    listScreen.display();
+                    listScreen.handleInput();
                     pause();
                     break;
                 case 0:
