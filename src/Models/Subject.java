@@ -1,6 +1,6 @@
 package Models;
 
-public class Subject {
+public class Subject implements IEntity {
     private String subjectID;
     private String subjectName;
     private int lessonCount;
@@ -10,11 +10,11 @@ public class Subject {
     private String teacherInCharge;
     private String status;
 
-    public Subject(){
-
+    public Subject() {
     }
 
-    public Subject(String subjectID, String subjectName, int lessonCount, double confficient, String subjectType, String description, String teacherInCharge, String status) {
+    public Subject(String subjectID, String subjectName, int lessonCount, double confficient,
+                   String subjectType, String description, String teacherInCharge, String status) {
         this.subjectID = subjectID;
         this.subjectName = subjectName;
         this.lessonCount = lessonCount;
@@ -25,6 +25,7 @@ public class Subject {
         this.status = status;
     }
 
+    // Getter và Setter
     public String getSubjectID() {
         return subjectID;
     }
@@ -89,16 +90,33 @@ public class Subject {
         this.status = status;
     }
 
+    // Implement IEntity
     @Override
-    public String toString() {
+    public String getId() {
+        return this.subjectID;
+    }
+
+    @Override
+    public String toFileString() {
         return subjectID + "," + subjectName + "," + lessonCount + "," + confficient + "," + subjectType +
                 "," + description + "," + teacherInCharge + "," + status;
     }
 
-    public static Subject fromString(String line){
+    @Override
+    public boolean validate() {
+        // Validate cơ bản: ID và tên không được để trống, số tiết >= 0, hệ số >= 0
+        if (subjectID == null || subjectID.isEmpty()) return false;
+        if (subjectName == null || subjectName.isEmpty()) return false;
+        if (lessonCount < 0) return false;
+        if (confficient < 0) return false;
+        return true;
+    }
+
+    // Phương thức tiện ích từString
+    public static Subject fromString(String line) {
         String[] parts = line.split(",");
         if (parts.length != 8) return null;
-        try{
+        try {
             return new Subject(
                     parts[0],
                     parts[1],
@@ -112,5 +130,19 @@ public class Subject {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "ID='" + subjectID + '\'' +
+                ", Name='" + subjectName + '\'' +
+                ", Lessons=" + lessonCount +
+                ", Coefficient=" + confficient +
+                ", Type='" + subjectType + '\'' +
+                ", Description='" + description + '\'' +
+                ", Teacher='" + teacherInCharge + '\'' +
+                ", Status='" + status + '\'' +
+                '}';
     }
 }

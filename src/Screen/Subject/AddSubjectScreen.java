@@ -1,20 +1,22 @@
 package Screen.Subject;
 
-import Models.Subject;
 import Screen.AbstractScreen;
-import Utils.FileUtil;
+import Services.SubjectService;
+import Models.Subject;
 import Utils.InputUtil;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddSubjectScreen extends AbstractScreen {
+    private final SubjectService subjectService;
 
-    private static final String FILE_PATH = "src/Data/subjects.txt";
+    public AddSubjectScreen() {
+        this.subjectService = SubjectService.getInstance();
+    }
 
     @Override
     public void display() {
+        clearScreen();
         System.out.println("┌──────────────────────────────────────────┐");
         System.out.println("│           THÊM MÔN HỌC MỚI               │");
         System.out.println("└──────────────────────────────────────────┘");
@@ -22,48 +24,21 @@ public class AddSubjectScreen extends AbstractScreen {
 
     @Override
     public void handleInput() {
-        List<String> subjectLines = new ArrayList<>();
-        try {
-            if (FileUtil.fileExists(FILE_PATH)) {
-                subjectLines = FileUtil.readLines(FILE_PATH);
-            }
-        } catch (IOException e) {
-            System.out.println("Lỗi đọc file: " + e.getMessage());
+        System.out.println("\nNhập thông tin môn học:");
+        String id = InputUtil.getNonEmptyString("Mã ID: ");
+        String name = input("Tên Môn Học: ");
+        int lessonCount = InputUtil.getInt("Số tiết học: ");
+        double confficient = InputUtil.getDouble("Hệ số: ");
+        String type = input("Loại Môn (Bắt buộc/Tự chọn): ");
+        String description = input("Mô tả: ");
+        String teacher = input("Giáo viên phụ trách: ");
+        String status = input("Trạng thái (Đang dạy/Ngừng): ");
+
+        if (subjectService.addSubject(id, name, lessonCount, confficient, type, description, teacher, status)) {
+            System.out.println("\nThông tin môn học đã thêm:");
+            subjectService.findById(id).ifPresent(System.out::println);
         }
 
-        String id;
-        while (true) {
-            id = InputUtil.getNonEmptyString("Mã môn học: ");
-            boolean exists = false;
-            for (String line : subjectLines) {
-                Subject s = Subject.fromString(line);
-                if (s != null && s.getSubjectID().equalsIgnoreCase(id)) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (exists) System.out.println("Mã môn học đã tồn tại! Nhập lại.");
-            else break;
-        }
-
-        String name = InputUtil.getNonEmptyString("Tên môn học: ");
-        int lessons = InputUtil.getInt("Số tiết: ");
-        double coeff = InputUtil.getDouble("Hệ số: ");
-        String type = InputUtil.getNonEmptyString("Loại môn (Bắt buộc/Tự chọn): ");
-        String desc = InputUtil.getString("Mô tả: ");
-        String teacher = InputUtil.getNonEmptyString("Giáo viên phụ trách: ");
-        String status = InputUtil.getNonEmptyString("Trạng thái (Hoạt động/Ngừng): ");
-
-        Subject newSubject = new Subject(id, name, lessons, coeff, type, desc, teacher, status);
-        subjectLines.add(newSubject.toString());
-
-        try {
-            FileUtil.writeLines(FILE_PATH, subjectLines);
-            System.out.println("\nĐã thêm môn học thành công!");
-        } catch (IOException e) {
-            System.out.println("Lỗi khi lưu file: " + e.getMessage());
-        }
-
-        InputUtil.pressEnterToContinue();
+        pause();
     }
 }

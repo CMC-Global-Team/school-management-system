@@ -1,6 +1,8 @@
 package Screen.Subject;
 
+
 import Screen.AbstractScreen;
+
 
 public class MenuSubjectScreen extends AbstractScreen {
     private final AddSubjectScreen createScreen;
@@ -8,8 +10,9 @@ public class MenuSubjectScreen extends AbstractScreen {
     private final DeleteSubjectScreen deleteScreen;
     private final SearchSubjectScreen searchScreen;
     private final ListSubjectScreen listScreen;
-    private final AssignTeacherScreen assignTeacherScreen;
+    //private final AssignTeacherScreen assignTeacherScreen;
     private final EditSubjectScreen editSubjectScreen;
+
 
     public MenuSubjectScreen() {
         super();
@@ -18,9 +21,10 @@ public class MenuSubjectScreen extends AbstractScreen {
         this.deleteScreen = new DeleteSubjectScreen();
         this.searchScreen = new SearchSubjectScreen();
         this.listScreen = new ListSubjectScreen();
-        this.assignTeacherScreen = new AssignTeacherScreen();
+        //this.assignTeacherScreen = new AssignTeacherScreen();
         this.editSubjectScreen = new EditSubjectScreen();
     }
+
 
     @Override
     public void display() {
@@ -38,6 +42,7 @@ public class MenuSubjectScreen extends AbstractScreen {
         System.out.println("└──────────────────────────────────────────┘");
     }
 
+
     @Override
     public void handleInput() {
         boolean running = true;
@@ -45,6 +50,7 @@ public class MenuSubjectScreen extends AbstractScreen {
             clearScreen();
             display();
             int choice = inputInt("Nhập lựa chọn của bạn: ");
+
 
             switch (choice) {
                 case 1:
@@ -64,8 +70,9 @@ public class MenuSubjectScreen extends AbstractScreen {
                     searchScreen.handleInput();
                     break;
                 case 5:
-                    assignTeacherScreen.display();
-                    assignTeacherScreen.handleInput();
+                    //assignTeacherScreen.display();
+                    //assignTeacherScreen.handleInput();
+                    System.out.println("Đang phát triển");
                     pause();
                     break;
                 case 6:

@@ -2,9 +2,15 @@ package Screen.ClassRoom;
 
 import Models.Classroom;
 import Screen.AbstractScreen;
-import java.util.List;
+import Services.ClassroomService;
+import java.util.Optional;
 
 public class DeleteClassRoomScreen extends AbstractScreen {
+    private final ClassroomService classroomService;
+
+    public DeleteClassRoomScreen() {
+        this.classroomService = ClassroomService.getInstance();
+    }
 
     @Override
     public void display() {
@@ -14,12 +20,9 @@ public class DeleteClassRoomScreen extends AbstractScreen {
         System.out.println("└──────────────────────────────────────────┘");
     }
 
-
     @Override
     public void handleInput() {
-        List<Classroom> classrooms = AddClassRoomScreen.getClassrooms();
-        
-        if (classrooms.isEmpty()) {
+        if (classroomService.getTotalClasses() == 0) {
             System.out.println("\nKhông có lớp học nào để xóa.");
             pause();
             return;
@@ -27,33 +30,26 @@ public class DeleteClassRoomScreen extends AbstractScreen {
 
         String classId = input("\nNhập Mã Lớp cần xóa: ");
         
-        Classroom classroom = findClassById(classId);
+        Optional<Classroom> classroomOpt = classroomService.findById(classId);
         
-        if (classroom == null) {
+        if (!classroomOpt.isPresent()) {
             System.out.println("Lỗi: Không tìm thấy lớp học!");
             pause();
             return;
         }
 
+        Classroom classroom = classroomOpt.get();
         System.out.println("\nĐã tìm thấy lớp học:");
         System.out.println(classroom);
         
         String confirm = input("\nBạn có chắc chắn muốn xóa lớp học này? (yes/no): ");
         
         if (confirm.equalsIgnoreCase("yes") || confirm.equalsIgnoreCase("y")) {
-            classrooms.remove(classroom);
-            System.out.println("\n✓ Xóa lớp học thành công!");
+            classroomService.deleteClass(classId);
         } else {
             System.out.println("\nĐã hủy xóa.");
         }
         
         pause();
-    }
-
-    private Classroom findClassById(String classId) {
-        return AddClassRoomScreen.getClassrooms().stream()
-                .filter(c -> c.getClassId().equalsIgnoreCase(classId))
-                .findFirst()
-                .orElse(null);
     }
 }

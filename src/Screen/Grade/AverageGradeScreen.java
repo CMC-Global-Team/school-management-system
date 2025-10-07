@@ -1,7 +1,6 @@
 package Screen.Grade;
 
 import Models.Grade;
-import Models.Student;
 import Models.Subject;
 import Screen.AbstractScreen;
 import Utils.FileUtil;
@@ -33,8 +32,8 @@ public class AverageGradeScreen extends AbstractScreen{
         }catch (IOException e) {
             System.out.println("Có lỗi xảy ra khi đọc file điểm số: " + e.getMessage());
         }
-        String studentID = InputUtil.getString("Mã học sinh(Enter để quay lại): ");
-        if(studentID.isEmpty()) {
+        String studentID = InputUtil.getString("Mã học sinh(Enter để qauy lại): ");
+        if(studentID.isEmpty()){
             return;
         }
         studentResults = SearchForStudentGradesScreen.findGradesByStudentID(gradeLines, studentID);

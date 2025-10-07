@@ -2,7 +2,7 @@ package Models;
 
 import java.time.LocalDate;
 
-public class Student extends Person {
+public class Student extends Person implements IEntity {
     private LocalDate dateOfBirth;
     private String gender;
     private String className;
@@ -43,11 +43,33 @@ public class Student extends Person {
 
     @Override
     public String toString(){
-        return id + "," + name + "," + dateOfBirth + "," + gender + "," + className + "," +
-                course + "," + parentPhone + "," + address;
+        return "Student: " + id + " - " + name + ", DOB: " + dateOfBirth + 
+               ", Class: " + className + ", Gender: " + gender;
     }
 
-    public static  Student fromString(String line){
+    // ===== Implement IEntity Interface =====
+    
+    @Override
+    public String getId() {
+        return id;
+    }
+    
+    @Override
+    public String toFileString() {
+        return id + "," + name + "," + dateOfBirth + "," + gender + "," + className + "," +
+                course + "," + parentPhone + "," + address + "," + status;
+    }
+    
+    @Override
+    public boolean validate() {
+        if (id == null || id.trim().isEmpty()) return false;
+        if (name == null || name.trim().isEmpty()) return false;
+        if (dateOfBirth == null) return false;
+        if (className == null || className.trim().isEmpty()) return false;
+        return true;
+    }
+
+    public static Student fromString(String line){
         String[] parts = line.split(",");
         if(parts.length != 9) return null;
 
@@ -64,7 +86,7 @@ public class Student extends Person {
                     parts[8]
             );
         }catch (Exception e){
-            e.printStackTrace();
+            System.err.println("Lỗi parse Student: " + e.getMessage());
             return null;
         }
     }

@@ -1,65 +1,82 @@
 package Screen.Subject;
 
-import Models.Subject;
-import Screen.AbstractScreen;
-import Utils.FileUtil;
-import Utils.InputUtil;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import Screen.AbstractScreen;
+import Services.SubjectService;
+import Models.Subject;
+
+
+import java.util.Optional;
+
 
 public class UpdateSubjectScreen extends AbstractScreen {
+    private final SubjectService subjectService;
 
-    private static final String FILE_PATH = "src/Data/subjects.txt";
+
+    public UpdateSubjectScreen() {
+        this.subjectService = SubjectService.getInstance();
+    }
+
 
     @Override
     public void display() {
+        clearScreen();
         System.out.println("┌──────────────────────────────────────────┐");
         System.out.println("│           CẬP NHẬT MÔN HỌC               │");
         System.out.println("└──────────────────────────────────────────┘");
     }
 
+
     @Override
     public void handleInput() {
-        String id = InputUtil.getNonEmptyString("Nhập mã môn học cần cập nhật: ");
+        String id = input("Nhập mã môn học cần cập nhật: ");
+        Optional<Subject> opt = subjectService.findById(id);
 
-        try {
-            List<String> lines = FileUtil.readLines(FILE_PATH);
-            List<String> updated = new ArrayList<>();
-            boolean found = false;
 
-            for (String line : lines) {
-                Subject s = Subject.fromString(line);
-                if (s != null && s.getSubjectID().equalsIgnoreCase(id)) {
-                    found = true;
-                    System.out.println("Đang cập nhật môn: " + s.getSubjectName());
-                    String newName = InputUtil.getString("Tên mới (Enter để giữ nguyên): ");
-                    if (!newName.isEmpty()) s.setSubjectName(newName);
-
-                    String newDesc = InputUtil.getString("Mô tả mới (Enter để giữ nguyên): ");
-                    if (!newDesc.isEmpty()) s.setDescription(newDesc);
-
-                    String newStatus = InputUtil.getString("Trạng thái mới (Enter để giữ nguyên): ");
-                    if (!newStatus.isEmpty()) s.setStatus(newStatus);
-
-                    updated.add(s.toString());
-                } else {
-                    updated.add(line);
-                }
-            }
-
-            if (found) {
-                FileUtil.writeLines(FILE_PATH, updated);
-                System.out.println("Cập nhật thành công!");
-            } else {
-                System.out.println("Không tìm thấy môn học!");
-            }
-
-        } catch (IOException e) {
-            System.out.println("Lỗi cập nhật: " + e.getMessage());
+        if (opt.isEmpty()) {
+            System.out.println("Không tìm thấy môn học với mã: " + id);
+            pause();
+            return;
         }
 
-        InputUtil.pressEnterToContinue();
+
+        Subject s = opt.get();
+        System.out.println("Thông tin hiện tại: " + s);
+
+
+        String name = input("Tên mới (" + s.getSubjectName() + "): ");
+        if (!name.isEmpty()) s.setSubjectName(name);
+
+
+        String lessonStr = input("Số tiết (" + s.getLessonCount() + "): ");
+        if (!lessonStr.isEmpty()) s.setLessonCount(Integer.parseInt(lessonStr));
+
+
+        String coefStr = input("Hệ số (" + s.getConfficient() + "): ");
+        if (!coefStr.isEmpty()) s.setConfficient(Double.parseDouble(coefStr));
+
+
+        String type = input("Loại môn (" + s.getSubjectType() + "): ");
+        if (!type.isEmpty()) s.setSubjectType(type);
+
+
+        String desc = input("Mô tả (" + s.getDescription() + "): ");
+        if (!desc.isEmpty()) s.setDescription(desc);
+
+
+        String teacher = input("Giáo viên phụ trách (" + s.getTeacherInCharge() + "): ");
+        if (!teacher.isEmpty()) s.setTeacherInCharge(teacher);
+
+
+        String status = input("Trạng thái (" + s.getStatus() + "): ");
+        if (!status.isEmpty()) s.setStatus(status);
+
+
+        if (subjectService.updateSubject(s)) {
+            System.out.println("Cập nhật thành công!");
+        }
+
+
+        pause();
     }
 }

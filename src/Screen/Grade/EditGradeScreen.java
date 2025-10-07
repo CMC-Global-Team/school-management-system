@@ -59,8 +59,8 @@ public class EditGradeScreen extends AbstractScreen {
             pause();
             return;
         }
-        String gradeID = InputUtil.getString("Nhập mã điểm cần chỉnh sửa: ");
-        if(gradeID.isEmpty()) {
+        String gradeID = InputUtil.getString("Nhập mã điểm cần chỉnh sửa(Enter để quay lại): ");
+        if (gradeID.isEmpty()) {
             return;
         }
         if (!EnterGradeScreen.isExistGradeID(gradeID,  gradeLines)) {
@@ -72,15 +72,11 @@ public class EditGradeScreen extends AbstractScreen {
         Grade grade = EnterGradeScreen.getGradeByID(gradeID, gradeLines);
 
         System.out.println("\nThông tin hiện tại: ");
-        if (grade == null) {
-            System.out.println("Không tìm đuợc thông tin!");
-            pause();
-            return;
-        }
+        if (grade != null) {
             List<String> info = new ArrayList<>();
             info.add(grade.toString());
             SearchForStudentGradesScreen.displayResults(info);
-
+        }
         System.out.println("\nBạn muốn cập nhật thông tin gì?");
         System.out.println("1. Mã học sinh");
         System.out.println("2. Mã môn");

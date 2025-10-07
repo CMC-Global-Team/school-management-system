@@ -1,0 +1,208 @@
+package Services;
+
+import Models.Subject;
+import java.util.List;
+import java.util.Optional;
+public class SubjectService {
+    private static SubjectService instance;
+    private final SubjectRepository repository;
+
+
+    private SubjectService() {
+        this.repository = new SubjectRepository();
+    }
+    /**
+     * Lấy instance duy nhất của SubjectService (Singleton)
+     */
+    public static SubjectService getInstance() {
+        if (instance == null) {
+            instance = new SubjectService();
+        }
+        return instance;
+    }
+    /**
+     * Thêm môn học mới
+     */
+    public boolean addSubject(String subjectID, String subjectName, int lessonCount, double confficient,
+                              String subjectType, String description, String teacherInCharge, String status) {
+        if (subjectID == null || subjectID.trim().isEmpty()) {
+            System.out.println("Lỗi: Mã môn học không được để trống!");
+            return false;
+        }
+
+
+        if (subjectName == null || subjectName.trim().isEmpty()) {
+            System.out.println("Lỗi: Tên môn học không được để trống!");
+            return false;
+        }
+
+
+        if (repository.exists(subjectID)) {
+            System.out.println("Lỗi: Mã môn học '" + subjectID + "' đã tồn tại!");
+            return false;
+        }
+
+
+        Subject subject = new Subject(subjectID, subjectName, lessonCount, confficient, subjectType, description, teacherInCharge, status);
+        if (repository.add(subject)) {
+            System.out.println("✓ Thêm môn học thành công!");
+            return true;
+        } else {
+            System.out.println("Lỗi: Không thể thêm môn học!");
+            return false;
+        }
+    }
+    /**
+     * Cập nhật môn học
+     */
+    public boolean updateSubject(Subject subject) {
+        if (subject == null) {
+            System.out.println("Lỗi: Subject không được null!");
+            return false;
+        }
+
+
+        if (!repository.exists(subject.getSubjectID())) {
+            System.out.println("Lỗi: Không tìm thấy môn học với mã '" + subject.getSubjectID() + "'!");
+            return false;
+        }
+
+
+        if (repository.update(subject)) {
+            System.out.println("✓ Cập nhật môn học thành công!");
+            return true;
+        } else {
+            System.out.println("Lỗi: Không thể cập nhật môn học!");
+            return false;
+        }
+    }
+    /**
+     * Xóa môn học theo ID
+     */
+    public boolean deleteSubject(String subjectID) {
+        if (subjectID == null || subjectID.trim().isEmpty()) {
+            System.out.println("Lỗi: Mã môn học không được để trống!");
+            return false;
+        }
+
+
+        if (!repository.exists(subjectID)) {
+            System.out.println("Lỗi: Không tìm thấy môn học với mã '" + subjectID + "'!");
+            return false;
+        }
+
+
+        if (repository.delete(subjectID)) {
+            System.out.println("✓ Xóa môn học thành công!");
+            return true;
+        } else {
+            System.out.println("Lỗi: Không thể xóa môn học!");
+            return false;
+        }
+    }
+    /**
+     * Tìm môn học theo ID
+     */
+    public Optional<Subject> findById(String subjectID) {
+        return repository.findById(subjectID);
+    }
+    /**
+     * Lấy tất cả môn học
+     */
+    public List<Subject> getAllSubjects() {
+        return repository.findAll();
+    }
+    /**
+     * Tìm kiếm môn học theo từ khóa
+     */
+    public List<Subject> searchSubjects(String keyword) {
+        return repository.search(keyword);
+    }
+    /**
+     * Kiểm tra mã môn học đã tồn tại chưa
+     */
+    public boolean isSubjectIdExists(String subjectID) {
+        return repository.exists(subjectID);
+    }
+    /**
+     * Đếm tổng số môn học
+     */
+    public int getTotalSubjects() {
+        return repository.count();
+    }
+    /**
+     * Hiển thị danh sách tất cả môn học
+     */
+    public void displayAllSubjects() {
+        List<Subject> subjects = getAllSubjects();
+
+
+        if (subjects.isEmpty()) {
+            System.out.println("\nKhông có môn học nào trong hệ thống.");
+            return;
+        }
+
+        System.out.println("\n┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐");
+        System.out.println("│                                         DANH SÁCH MÔN HỌC                                                     │");
+        System.out.println("├───────────────────────────────────────────────────────────────────────────────────────────────────────────────┤");
+        System.out.printf("│ %-10s %-25s %-10s %-10s %-15s %-20s %-20s %-10s │%n",
+                "Mã MH", "Tên MH", "Số tiết", "Hệ số", "Loại môn", "Mô tả", "Giáo viên", "Trạng thái");
+        System.out.println("├───────────────────────────────────────────────────────────────────────────────────────────────────────────────┤");
+        for (Subject s : subjects) {
+            System.out.printf("│ %-10s %-25s %-10d %-10.2f %-15s %-20s %-20s %-10s │%n",
+                    truncate(s.getSubjectID(), 10),
+                    truncate(s.getSubjectName(), 25),
+                    s.getLessonCount(),
+                    s.getConfficient(),
+                    truncate(s.getSubjectType(), 15),
+                    truncate(s.getDescription(), 20),
+                    truncate(s.getTeacherInCharge(), 20),
+                    truncate(s.getStatus(), 10));
+        }
+        System.out.println("└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘");
+        System.out.println("Tổng số môn học: " + subjects.size());
+    }
+    /**
+     * Hiển thị kết quả tìm kiếm môn học
+     */
+    public void displaySearchResults(String keyword) {
+        List<Subject> results = searchSubjects(keyword);
+
+
+        if (results.isEmpty()) {
+            System.out.println("\nKhông tìm thấy môn học nào phù hợp với từ khóa: '" + keyword + "'");
+            return;
+        }
+        System.out.println("\n┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐");
+        System.out.println("│                                     KẾT QUẢ TÌM KIẾM MÔN HỌC                                                  │");
+        System.out.println("├───────────────────────────────────────────────────────────────────────────────────────────────────────────────┤");
+        System.out.printf("│ %-10s %-25s %-10s %-10s %-15s %-20s %-20s %-10s │%n",
+                "Mã MH", "Tên MH", "Số tiết", "Hệ số", "Loại môn", "Mô tả", "Giáo viên", "Trạng thái");
+        System.out.println("├───────────────────────────────────────────────────────────────────────────────────────────────────────────────┤");
+
+
+        for (Subject s : results) {
+            System.out.printf("│ %-10s %-25s %-10d %-10.2f %-15s %-20s %-20s %-10s │%n",
+                    truncate(s.getSubjectID(), 10),
+                    truncate(s.getSubjectName(), 25),
+                    s.getLessonCount(),
+                    s.getConfficient(),
+                    truncate(s.getSubjectType(), 15),
+                    truncate(s.getDescription(), 20),
+                    truncate(s.getTeacherInCharge(), 20),
+                    truncate(s.getStatus(), 10)
+            );
+        }
+
+
+        System.out.println("└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘");
+        System.out.println("Tìm thấy: " + results.size() + " môn học");
+    }
+
+    private String truncate(String str, int maxLength) {
+        if (str == null) return "";
+        if (str.length() <= maxLength) return str;
+        return str.substring(0, maxLength - 3) + "...";
+    }
+}
+
