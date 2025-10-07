@@ -34,7 +34,7 @@ public class DeleteGradeScreen extends AbstractScreen {
             if(gradeID.isEmpty()) {
                 return;
             }
-            if(!gradeID.isEmpty() && EnterGradeScreen.isExistGradeID(gradeID, gradeLines)) {
+            if(EnterGradeScreen.isExistGradeID(gradeID, gradeLines)) {
                 for (String line : gradeLines) {
                     Grade g = Grade.fromString(line);
                     if (g != null && g.getGradeId().equals(gradeID)) {
