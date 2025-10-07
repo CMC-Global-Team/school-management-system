@@ -59,7 +59,10 @@ public class EditGradeScreen extends AbstractScreen {
             pause();
             return;
         }
-        String gradeID = InputUtil.getNonEmptyString("Nhập mã điểm cần chỉnh sửa: ");
+        String gradeID = InputUtil.getString("Nhập mã điểm cần chỉnh sửa: ");
+        if(gradeID.isEmpty()) {
+            return;
+        }
         if (!EnterGradeScreen.isExistGradeID(gradeID,  gradeLines)) {
             System.out.println("Không tìm thấy mã điểm " + gradeID + "!");
             pause();
@@ -69,7 +72,14 @@ public class EditGradeScreen extends AbstractScreen {
         Grade grade = EnterGradeScreen.getGradeByID(gradeID, gradeLines);
 
         System.out.println("\nThông tin hiện tại: ");
-        System.out.println(grade);
+        if (grade == null) {
+            System.out.println("Không tìm đuợc thông tin!");
+            pause();
+            return;
+        }
+            List<String> info = new ArrayList<>();
+            info.add(grade.toString());
+            SearchForStudentGradesScreen.displayResults(info);
 
         System.out.println("\nBạn muốn cập nhật thông tin gì?");
         System.out.println("1. Mã học sinh");
@@ -92,7 +102,7 @@ public class EditGradeScreen extends AbstractScreen {
                 updateSubjectID(grade, subjectLines);
                 break;
             case 3:
-                updateGradeType(grade);
+                updateGradeType(grade, gradeLines);
                 break;
             case 4:
                 updateScore(grade);
@@ -107,7 +117,7 @@ public class EditGradeScreen extends AbstractScreen {
                 updateNote(grade);
                 break;
             case 8:
-                updateAll(grade, studentLines, subjectLines);
+                updateAll(grade, studentLines, subjectLines, gradeLines);
                 break;
             case 0:
                 System.out.println("Đã hủy cập nhật.");
@@ -150,11 +160,13 @@ public class EditGradeScreen extends AbstractScreen {
         }
     }
 
-    private void updateGradeType(Grade grade) {
+    private void updateGradeType(Grade grade, List<String> gradeLines) {
         String gradeType = InputUtil.getNonEmptyString("Loại điểm: ");
         if(!gradeType.isEmpty()){
-            grade.setGradeType(gradeType);
-            updated = true;
+            if(EnterGradeScreen.isExistGradeType(grade.getGradeType(), grade.getStudentId(), gradeLines)){
+                grade.setGradeType(gradeType);
+                updated = true;
+            }
         }
     }
 
@@ -182,20 +194,22 @@ public class EditGradeScreen extends AbstractScreen {
 
     private void updateNote(Grade grade) {
         String note = InputUtil.getString("Ghi chú: ");
-        grade.setNote(note);
-        updated = true;
+        if(!note.isEmpty()){
+            grade.setNote(note);
+            updated = true;
+        }
     }
 
-    private void updateAll(Grade grade, List<String> studentLines, List<String> subjectLines) {
+    private void updateAll(Grade grade, List<String> studentLines, List<String> subjectLines, List<String> gradeLines) {
         updateStudentID(grade, studentLines);
         updateSubjectID(grade, subjectLines);
-        updateGradeType(grade);
+        updateGradeType(grade, gradeLines);
         updateScore(grade);
         updateSemester(grade);
         updateSchoolYear(grade);
         updateNote(grade);
     }
-    private void updateInfo(List<String> gradeLines,List<String> updateLines ,Grade grade) {
+    private void updateInfo(List<String> gradeLines, List<String> updateLines ,Grade grade) {
         for(String line : gradeLines){
             Grade g = Grade.fromString(line);
             if(g != null && g.getGradeId().equals(grade.getGradeId())){
@@ -206,7 +220,7 @@ public class EditGradeScreen extends AbstractScreen {
             }
         }
         try{
-        FileUtil.writeLines("src/Data/grades.txt",updateLines);
+            FileUtil.writeLines("src/Data/grades.txt",updateLines);
         } catch (Exception e) {
             System.out.println("Lỗi cập nhật: " + e.getMessage());
             pause();

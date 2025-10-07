@@ -76,7 +76,12 @@ public class EnterGradeScreen extends  AbstractScreen {
         while(true) {
             gradeType = InputUtil.getNonEmptyString("Loại điểm(thuong xuyen/ giua ky/ cuoi ky): ");
             if(gradeType.equals("thuong xuyen")|| gradeType.equals("giua ky") || gradeType.equals("cuoi ky")){
-                break;
+                if(isExistGradeType(gradeType, studentID, gradeLines)) {
+                    System.out.println("Loại điểm này đã tồn tại!");
+                }
+                else {
+                    break;
+                }
             }
             else {
                 System.out.println("Loại điểm không hợp lệ!");
@@ -142,5 +147,14 @@ public class EnterGradeScreen extends  AbstractScreen {
         int start = InputUtil.getInt("Năm bắt đầu: ");
         int end = InputUtil.getInt("Năm kết thúc: ");
         return start + " - " + end;
+    }
+    public static boolean isExistGradeType(String gradeType, String studentID, List<String> gradeLines) {
+        for (String line : gradeLines) {
+            Grade grade = Grade.fromString(line);
+            if (grade != null && grade.getStudentId().equalsIgnoreCase(studentID) && grade.getGradeType().equalsIgnoreCase(gradeType)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

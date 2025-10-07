@@ -33,7 +33,10 @@ public class AverageGradeScreen extends AbstractScreen{
         }catch (IOException e) {
             System.out.println("Có lỗi xảy ra khi đọc file điểm số: " + e.getMessage());
         }
-        String studentID = InputUtil.getNonEmptyString("Mã học sinh: ");
+        String studentID = InputUtil.getString("Mã học sinh(Enter để quay lại): ");
+        if(studentID.isEmpty()) {
+            return;
+        }
         studentResults = SearchForStudentGradesScreen.findGradesByStudentID(gradeLines, studentID);
         while(!studentResults.isEmpty()){
             String firstLine = studentResults.get(0);

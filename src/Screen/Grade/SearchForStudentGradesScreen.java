@@ -100,14 +100,14 @@ public class SearchForStudentGradesScreen extends AbstractScreen {
             for (String line : results) {
                 Grade g = Grade.fromString(line);
                 if(g != null) {
-                    System.out.printf("%10s %10s %10s %10s %10s %10s %5s %20s%n",
+                    System.out.printf("%10s %15s %10s %15s %10s %15s %15s %15s%n",
                             "Mã điểm", "Mã học sinh", "Mã môn", "Loại điểm", "Diểm", "Năm học", "Kỳ học", "Ghi chú");
 
                     // Print separator
-                    System.out.println("-".repeat(10 + 1 + 10 + 1 + 10 + 1 + 10 + 1 + 10 + 1 + 10 + 1 + 5 + 1 + 20));
-                    System.out.printf("%10s %10s %10s %10s %10.2f %10s %5d %20s%n",
-                        g.getGradeId(), g.getStudentId(), g.getSubjectId(), g.getGradeType(),
-                        g.getScore(), g.getSchoolYear(), g.getSemester(), g.getNote());
+                    System.out.println("-".repeat(150));
+                    System.out.printf("%8s %12s %13s %18s %9.2f %17s %12d %15s%n",
+                            g.getGradeId(), g.getStudentId(), g.getSubjectId(), g.getGradeType(),
+                            g.getScore(), g.getSchoolYear(), g.getSemester(), g.getNote());
                 }
             }
             results.clear();
