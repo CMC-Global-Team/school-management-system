@@ -31,10 +31,13 @@ public class DeleteGradeScreen extends AbstractScreen {
             }
             boolean deleted = false;
             String gradeID = InputUtil.getString("Nhập mã điểm cần xoá(Enter để huỷ): ");
+            if(gradeID.isEmpty()) {
+                return;
+            }
             if(!gradeID.isEmpty() && EnterGradeScreen.isExistGradeID(gradeID, gradeLines)) {
                 for (String line : gradeLines) {
                     Grade g = Grade.fromString(line);
-                    if (g.getGradeId().equals(gradeID)) {
+                    if (g != null && g.getGradeId().equals(gradeID)) {
                         deleted = true;
 
                     } else {
@@ -60,7 +63,7 @@ public class DeleteGradeScreen extends AbstractScreen {
         if(!gradeID.isEmpty() && EnterGradeScreen.isExistGradeID(gradeID, gradeLines)) {
             for (String line : gradeLines) {
                 Grade g = Grade.fromString(line);
-                if (!g.getGradeId().equalsIgnoreCase(gradeID)) {
+                if (g != null &&!g.getGradeId().equalsIgnoreCase(gradeID)) {
                     remains.add(line);
                 }
             }
