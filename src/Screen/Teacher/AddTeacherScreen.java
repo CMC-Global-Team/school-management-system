@@ -2,17 +2,12 @@ package Screen.Teacher;
 
 import Models.Teacher;
 import Screen.AbstractScreen;
-import Utils.FileUtil;
+import Services.TeacherService;
 import Utils.InputUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
 
 public class AddTeacherScreen extends AbstractScreen {
 
-    private static final Pattern PHONE_PATTERN = Pattern.compile("\\d{10,11}");
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
+    private final TeacherService teacherService = TeacherService.getInstance();
 
     @Override
     public void display() {
@@ -23,79 +18,33 @@ public class AddTeacherScreen extends AbstractScreen {
 
     @Override
     public void handleInput() {
+        System.out.println("\nNhập thông tin giáo viên mới:");
 
-        // Đọc danh sách giáo viên hiện tại từ file
-        List<String> teacherLines = new ArrayList<>();
-        try {
-            if (FileUtil.fileExists("src/Data/teachers.txt")) {
-                teacherLines = FileUtil.readLines("src/Data/teachers.txt");
-            }
-        } catch (Exception e) {
-            System.out.println("Lỗi khi đọc file giáo viên: " + e.getMessage());
-        }
-
-        // Nhập mã giáo viên và kiểm tra trùng
         String id;
         while (true) {
             id = InputUtil.getNonEmptyString("Mã giáo viên: ");
-            boolean exists = false;
-
-            for (String line : teacherLines) {
-                Teacher t = Teacher.fromString(line);
-                if (t != null && t.getId().equalsIgnoreCase(id)) {
-                    exists = true;
-                    break;
-                }
-            }
-
-            if (exists) {
-                System.out.println("Mã giáo viên đã tồn tại! Nhập lại.");
-            } else {
-                break;
-            }
+            if (teacherService.isTeacherIdExists(id)) {
+                System.out.println("Mã giáo viên đã tồn tại! Vui lòng nhập lại.");
+            } else break;
         }
 
-        // Nhập các thông tin khác
         String name = InputUtil.getNonEmptyString("Họ và tên: ");
-        String subject = InputUtil.getNonEmptyString("Môn dạy: ");
+        String subject = InputUtil.getNonEmptyString("Môn giảng dạy: ");
         String degree = InputUtil.getNonEmptyString("Trình độ (Cử nhân/Thạc sĩ/Tiến sĩ): ");
         int experience = InputUtil.getInt("Số năm kinh nghiệm: ");
-
-        // Email
-        String email;
-        while (true) {
-            email = InputUtil.getNonEmptyString("Email: ");
-            if (!EMAIL_PATTERN.matcher(email).matches()) {
-                System.out.println("Email không hợp lệ! Nhập lại.");
-            } else {
-                break;
-            }
-        }
-
-        // Số điện thoại
-        String phone;
-        while (true) {
-            phone = InputUtil.getNonEmptyString("Số điện thoại: ");
-            if (!PHONE_PATTERN.matcher(phone).matches()) {
-                System.out.println("Số điện thoại không hợp lệ! Nhập lại.");
-            } else {
-                break;
-            }
-        }
-
+        String email = InputUtil.getNonEmptyString("Email: ");
+        String phone = InputUtil.getNonEmptyString("Số điện thoại: ");
         String homeroom = InputUtil.getString("Lớp chủ nhiệm (Enter nếu chưa có): ");
-        String status = InputUtil.getNonEmptyString("Trạng thái (Đang dạy/ Nghỉ hưu/ Công tác): ");
+        String status = InputUtil.getNonEmptyString("Trạng thái (Đang dạy/Nghỉ hưu/Công tác): ");
 
-        // Tạo đối tượng Teacher
-        Teacher newTeacher = new Teacher(id, name, status, subject, degree, experience, email, phone, homeroom);
-        teacherLines.add(newTeacher.toString());
+        boolean added = teacherService.addTeacher(
+                id, name, status, subject, degree, experience, email, phone, homeroom
+        );
 
-        // Lưu vào file
-        try {
-            FileUtil.writeLines("src/Data/teachers.txt", teacherLines);
+        if (added) {
             System.out.println("\nĐã thêm giáo viên thành công!");
-        } catch (Exception e) {
-            System.out.println("Lỗi khi lưu file: " + e.getMessage());
+        } else {
+            System.out.println("\nThêm giáo viên thất bại!");
         }
 
         InputUtil.pressEnterToContinue();
