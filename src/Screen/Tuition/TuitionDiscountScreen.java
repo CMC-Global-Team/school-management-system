@@ -65,7 +65,7 @@ public class TuitionDiscountScreen extends AbstractScreen {
             System.out.println("Đã áp dụng miễn giảm học phí thành công!");
             System.out.println("Số tiền sau khi miễn giảm: " + String.format("%,.0f", newAmount) + " VND");
         } else {
-            System.out.println("✗ Áp dụng miễn giảm thất bại!");
+            System.out.println(" Áp dụng miễn giảm thất bại!");
         }
 
         InputUtil.pressEnterToContinue();

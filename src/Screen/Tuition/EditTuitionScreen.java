@@ -39,7 +39,7 @@ public class EditTuitionScreen extends AbstractScreen {
         }
 
         Tuition t = optionalTuition.get();
-        System.out.println("\n🔎 Thông tin hiện tại:");
+        System.out.println("\n Thông tin hiện tại:");
         System.out.println("Mã sinh viên: " + t.getStudentId());
         System.out.println("Học kỳ: " + t.getSemester());
         System.out.println("Năm học: " + t.getSchoolYear());
@@ -97,7 +97,7 @@ public class EditTuitionScreen extends AbstractScreen {
 
             // Kiểm tra ngày không vượt quá hiện tại
             if (newPaymentDate.isAfter(LocalDate.now())) {
-                System.out.println("⚠️ Ngày thu không được vượt quá ngày hiện tại!");
+                System.out.println(" Ngày thu không được vượt quá ngày hiện tại!");
                 newPaymentDate = null; // reset để yêu cầu nhập lại
             }
         }
@@ -128,9 +128,9 @@ public class EditTuitionScreen extends AbstractScreen {
 
         // Cập nhật qua service
         if (tuitionService.updateTuition(t)) {
-            System.out.println("✓ Đã cập nhật thông tin học phí thành công!");
+            System.out.println(" Đã cập nhật thông tin học phí thành công!");
         } else {
-            System.out.println("✗ Cập nhật thất bại!");
+            System.out.println(" Cập nhật thất bại!");
         }
 
         InputUtil.pressEnterToContinue();
