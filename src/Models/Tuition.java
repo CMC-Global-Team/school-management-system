@@ -2,7 +2,11 @@ package Models;
 
 import java.time.LocalDate;
 
-public class Tuition {
+/**
+ * Tuition - Mô hình hóa dữ liệu học phí cho hệ thống quản lý trường học
+ * Implement IEntity để tích hợp với Repository pattern
+ */
+public class Tuition implements IEntity {
     private String tuitionId;
     private String studentId;
     private int semester;
@@ -29,6 +33,7 @@ public class Tuition {
         this.note = note;
     }
 
+    // Getter và Setter
     public String getTuitionId() {
         return tuitionId;
     }
@@ -101,12 +106,30 @@ public class Tuition {
         this.note = note;
     }
 
+    // Implement IEntity
     @Override
-    public String toString() {
+    public String getId() {
+        return this.tuitionId;
+    }
+
+    @Override
+    public String toFileString() {
         return tuitionId + "," + studentId + "," + semester + "," + schoolYear + "," +
                 amount + "," + paymentDate + "," + method + "," + status + "," + note;
     }
 
+    @Override
+    public boolean validate() {
+        // Validate cơ bản: ID không được để trống, semester > 0, amount >= 0, paymentDate không null
+        if (tuitionId == null || tuitionId.isEmpty()) return false;
+        if (studentId == null || studentId.isEmpty()) return false;
+        if (semester <= 0) return false;
+        if (amount < 0) return false;
+        if (paymentDate == null) return false;
+        return true;
+    }
+
+    // Phương thức tiện ích từString
     public static Tuition fromString(String line) {
         String[] parts = line.split(",");
         if (parts.length != 9) return null;
@@ -125,5 +148,20 @@ public class Tuition {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Tuition{" +
+                "ID='" + tuitionId + '\'' +
+                ", StudentID='" + studentId + '\'' +
+                ", Semester=" + semester +
+                ", SchoolYear='" + schoolYear + '\'' +
+                ", Amount=" + amount +
+                ", PaymentDate=" + paymentDate +
+                ", Method='" + method + '\'' +
+                ", Status='" + status + '\'' +
+                ", Note='" + note + '\'' +
+                '}';
     }
 }
