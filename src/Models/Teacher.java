@@ -1,6 +1,6 @@
 package Models;
 
-public class Teacher extends Person {
+public class Teacher extends Person implements IEntity {
     private String teacherSubject;
     private String teacherDegree;
     private int teacherExperience;
@@ -41,6 +41,11 @@ public class Teacher extends Person {
     public String getTeacherHomeroom() { return teacherHomeroom; }
     public void setTeacherHomeroom(String teacherHomeroom) { this.teacherHomeroom = teacherHomeroom; }
 
+    @Override
+    public String getId() {
+        return id;
+    }
+
     // Xuất ra File
     @Override
     public String toString() {
@@ -74,5 +79,18 @@ public class Teacher extends Person {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public String toFileString() {
+        return id + "," + name + "," + teacherSubject + "," + teacherDegree + "," + teacherExperience + "," +
+                teacherEmail + "," + teacherPhone + "," + teacherHomeroom + "," + status;
+    }
+
+    @Override
+    public boolean validate() {
+        if (id == null || id.trim().isEmpty()) return false;
+        if (name == null || name.trim().isEmpty()) return false;
+        return true;
     }
 }
