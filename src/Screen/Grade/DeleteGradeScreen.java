@@ -55,4 +55,18 @@ public class DeleteGradeScreen extends AbstractScreen {
             pause();
         }
     }
+    public static List<String> ignoreGradeID(String gradeID, List<String> gradeLines) {
+        List<String> remains = new ArrayList<>();
+        if(!gradeID.isEmpty() && EnterGradeScreen.isExistGradeID(gradeID, gradeLines)) {
+            for (String line : gradeLines) {
+                Grade g = Grade.fromString(line);
+                if (!g.getGradeId().equalsIgnoreCase(gradeID)) {
+                    remains.add(line);
+                }
+            }
+        }else {
+            System.out.println("Không tìm thấy điểm có mã: " + gradeID);
+        }
+        return remains;
+    }
 }

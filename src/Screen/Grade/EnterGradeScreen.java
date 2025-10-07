@@ -6,6 +6,8 @@ import Models.Subject;
 import Screen.AbstractScreen;
 import Utils.FileUtil;
 import Utils.InputUtil;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,34 +48,44 @@ public class EnterGradeScreen extends  AbstractScreen {
                 pause();
                 return;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Lỗi khi đọc file môn học/điểm số/học sinh: " + e.getMessage());
             pause();
             return;
         }
 
         String studentID = InputUtil.getNonEmptyString("Mã học sinh: ");
-            if (isExistStudentID(studentID,  studentLines)) {
-                System.out.println("Không tìm thấy học sinh có mã: " + studentID);
-                pause();
-                return;
-            }
+        if (isExistStudentID(studentID,  studentLines)) {
+            System.out.println("Không tìm thấy học sinh có mã: " + studentID);
+            pause();
+            return;
+        }
         String subjectID = InputUtil.getNonEmptyString("Mã môn học: ");
-            if (!isExistSubjectID(subjectID, subjectLines)) {
-                System.out.println("Không tìm thấy môn học có mã: " + subjectID);
-                pause();
-                return;
-            }
+        if (!isExistSubjectID(subjectID, subjectLines)) {
+            System.out.println("Không tìm thấy môn học có mã: " + subjectID);
+            pause();
+            return;
+        }
         String gradeID = InputUtil.getNonEmptyString("Mã điểm: ");
-            if (isExistGradeID(gradeID, gradeLines)) {
-                System.out.println("Mã điểm " + subjectID + " đã tồn tại!");
-                pause();
-                return;
+        if (isExistGradeID(gradeID, gradeLines)) {
+            System.out.println("Mã điểm " + subjectID + " đã tồn tại!");
+            pause();
+            return;
+        }
+        String gradeType;
+        while(true) {
+            gradeType = InputUtil.getNonEmptyString("Loại điểm(thuong xuyen/ giua ky/ cuoi ky): ");
+            if(gradeType.equals("thuong xuyen")|| gradeType.equals("giua ky") || gradeType.equals("cuoi ky")){
+                break;
             }
-        String gradeType = InputUtil.getNonEmptyString("Loại điểm: ");
+            else {
+                System.out.println("Loại điểm không hợp lệ!");
+            }
+        }
         double score = InputUtil.getDouble("Điểm số: ");
         int gradeSemester = InputUtil.getInt("Học kỳ: ");
-        String gradeSchoolYear = InputUtil.getNonEmptyString("Năm học: ");
+        System.out.println("Năm học: ");
+        String gradeSchoolYear = schoolYearInput();
         LocalDate inputDate =  LocalDate.now();
         String gradeNote = InputUtil.getString("Ghi chú: ");
 
@@ -125,5 +137,10 @@ public class EnterGradeScreen extends  AbstractScreen {
             }
         }
         return null;
+    }
+    public static String schoolYearInput(){
+        int start = InputUtil.getInt("Năm bắt đầu: ");
+        int end = InputUtil.getInt("Năm kết thúc: ");
+        return start + " - " + end;
     }
 }

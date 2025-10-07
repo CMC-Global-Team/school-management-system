@@ -4,6 +4,8 @@ import Models.Grade;
 import Screen.AbstractScreen;
 import Utils.FileUtil;
 import Utils.InputUtil;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class EditGradeScreen extends AbstractScreen {
         List<String> subjectLines = new ArrayList<>();
         List<String> studentLines = new ArrayList<>();
         List<String> updateLines = new ArrayList<>();
+        List<String> updatedGrade = new ArrayList<>();
 
         try {
             if (FileUtil.fileExists("src/Data/students.txt")) {
@@ -45,7 +48,7 @@ public class EditGradeScreen extends AbstractScreen {
                 pause();
                 return;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Lỗi khi đọc file môn học/điểm số/học sinh: " + e.getMessage());
             pause();
             return;
@@ -79,7 +82,7 @@ public class EditGradeScreen extends AbstractScreen {
         System.out.println("8. Cập nhật Tất cả");
         System.out.println("0. Hủy");
 
-        int choice = inputInt("\nNhập lựa chọn của bạn: ");
+        int choice = inputInt("\nNhập lựa chọn của bạn(0-8): ");
 
         switch (choice) {
             case 1:
@@ -119,7 +122,8 @@ public class EditGradeScreen extends AbstractScreen {
             updateInfo(gradeLines, updateLines, grade);
             System.out.println("\n✓ Cập nhật điểm thành công!");
             System.out.println("\nThông tin đã cập nhật: ");
-            System.out.println(grade);
+            updatedGrade.add(grade.toString());
+            SearchForStudentGradesScreen.displayResults(updatedGrade);
         }else {
             System.out.println("Không có thay đổi nào được thực hiện.");
         }
@@ -169,7 +173,7 @@ public class EditGradeScreen extends AbstractScreen {
     }
 
     private void updateSchoolYear(Grade grade) {
-        String schoolYear = InputUtil.getNonEmptyString("Năm học: ");
+        String schoolYear = EnterGradeScreen.schoolYearInput();
         if(!schoolYear.isEmpty()){
             grade.setSchoolYear(schoolYear);
             updated = true;
