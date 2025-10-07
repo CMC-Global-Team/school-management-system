@@ -39,7 +39,7 @@ public class AddStudentScreen extends AbstractScreen {
             try {
                 dateOfBirth = LocalDate.parse(dateStr, dateFormatter);
             } catch (DateTimeParseException e) {
-                System.out.println("⚠ Định dạng ngày không hợp lệ! Vui lòng nhập lại (dd/MM/yyyy).");
+                System.out.println("Định dạng ngày không hợp lệ! Vui lòng nhập lại (dd/MM/yyyy).");
             }
         }
 
