@@ -1,6 +1,5 @@
 package Screen.Subject;
 
-import Utils.IdGenerator;
 import Screen.AbstractScreen;
 import Services.SubjectService;
 import Models.Subject;
@@ -26,17 +25,7 @@ public class AddSubjectScreen extends AbstractScreen {
     @Override
     public void handleInput() {
         System.out.println("\nNhập thông tin môn học:");
-
-
-        List<Subject> subjects = subjectService.getAllSubjects(); // lấy toàn bộ môn học
-        List<String> ids = subjects.stream()
-                .map(Subject::getSubjectID)
-                .toList();
-
-        String id = IdGenerator.generateId(ids, "M", 2);
-        System.out.println("Mã môn học gợi ý: " + id);
-        String suggestedId = input("Mã Môn Học (nhấn Enter để dùng gợi ý): ").trim();
-        if (suggestedId.isEmpty()) suggestedId = id;
+        String id = InputUtil.getNonEmptyString("Mã ID: ");
         String name = input("Tên Môn Học: ");
         int lessonCount = InputUtil.getInt("Số tiết học: ");
         double confficient = InputUtil.getDouble("Hệ số: ");
