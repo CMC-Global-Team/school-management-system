@@ -2,16 +2,21 @@ package Screen.Teacher;
 
 import Models.Teacher;
 import Screen.AbstractScreen;
-import Utils.FileUtil;
+import Services.TeacherService;
 import Utils.InputUtil;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
-
+/**
+ * Màn hình cập nhật thông tin giáo viên
+ * - Hiển thị giao diện nhập
+ * - Gọi TeacherService để xử lý logic cập nhật
+ */
 public class UpdateTeacherScreen extends AbstractScreen {
 
-    private static final String FILE_PATH = "src/Data/teachers.txt";
+    private final TeacherService teacherService;
+
+    public UpdateTeacherScreen() {
+        this.teacherService = TeacherService.getInstance(); // sử dụng Singleton
+    }
 
     @Override
     public void display() {
@@ -22,66 +27,56 @@ public class UpdateTeacherScreen extends AbstractScreen {
 
     @Override
     public void handleInput() {
-        try {
-            List<String> lines = FileUtil.readLines(FILE_PATH);
-            List<Teacher> teachers = lines.stream()
-                    .map(Teacher::fromString)
-                    .collect(Collectors.toList());
+        String id = InputUtil.getNonEmptyString("Nhập mã giáo viên cần cập nhật: ");
 
-            if (teachers.isEmpty()) {
-                System.out.println("Hiện chưa có giáo viên nào trong hệ thống!");
-                pause();
-                return;
+        // Tìm giáo viên theo ID trước
+        Teacher existing = teacherService.findById(id).orElse(null);
+
+        if (existing == null) {
+            System.out.println("⚠ Không tìm thấy giáo viên có mã '" + id + "'.");
+            pause();
+            return;
+        }
+
+        System.out.println("\nThông tin hiện tại:");
+        System.out.println(existing);
+
+        System.out.println("\nNhập thông tin mới (Enter để giữ nguyên):");
+
+        String name = InputUtil.getString("Tên mới (" + existing.getName() + "): ");
+        if (!name.isEmpty()) existing.setName(name);
+
+        String subject = InputUtil.getString("Môn dạy (" + existing.getTeacherSubject() + "): ");
+        if (!subject.isEmpty()) existing.setTeacherSubject(subject);
+
+        String degree = InputUtil.getString("Học vị (" + existing.getTeacherDegree() + "): ");
+        if (!degree.isEmpty()) existing.setTeacherDegree(degree);
+
+        String expStr = InputUtil.getString("Kinh nghiệm (" + existing.getTeacherExperience() + "): ");
+        if (!expStr.isEmpty()) {
+            try {
+                existing.setTeacherExperience(Integer.parseInt(expStr));
+            } catch (NumberFormatException e) {
+                System.out.println("⚠ Kinh nghiệm không hợp lệ, giữ nguyên giá trị cũ.");
             }
+        }
 
-            String id = InputUtil.getNonEmptyString("Nhập mã giáo viên cần cập nhật: ");
-            Teacher t = teachers.stream()
-                    .filter(x -> x.getId().equalsIgnoreCase(id))
-                    .findFirst()
-                    .orElse(null);
+        String email = InputUtil.getString("Email (" + existing.getTeacherEmail() + "): ");
+        if (!email.isEmpty()) existing.setTeacherEmail(email);
 
-            if (t == null) {
-                System.out.println("Không tìm thấy giáo viên với mã này!");
-                pause();
-                return;
-            }
+        String phone = InputUtil.getString("SĐT (" + existing.getTeacherPhone() + "): ");
+        if (!phone.isEmpty()) existing.setTeacherPhone(phone);
 
-            System.out.println("Thông tin hiện tại: " + t);
+        String homeroom = InputUtil.getString("Lớp CN (" + existing.getTeacherHomeroom() + "): ");
+        if (!homeroom.isEmpty()) existing.setTeacherHomeroom(homeroom);
 
-            String name = InputUtil.getString("Tên mới (" + t.getName() + "): ");
-            if (!name.isEmpty()) t.setName(name);
+        // Gọi service để cập nhật
+        boolean success = teacherService.updateTeacher(existing);
 
-            String subject = InputUtil.getString("Môn dạy (" + t.getTeacherSubject() + "): ");
-            if (!subject.isEmpty()) t.setTeacherSubject(subject);
-
-            String degree = InputUtil.getString("Học vị (" + t.getTeacherDegree() + "): ");
-            if (!degree.isEmpty()) t.setTeacherDegree(degree);
-
-            String expStr = InputUtil.getString("Kinh nghiệm (" + t.getTeacherExperience() + "): ");
-            if (!expStr.isEmpty()) {
-                try {
-                    t.setTeacherExperience(Integer.parseInt(expStr));
-                } catch (NumberFormatException e) {
-                    System.out.println("Kinh nghiệm không hợp lệ, giữ nguyên giá trị cũ!");
-                }
-            }
-
-            String email = InputUtil.getString("Email (" + t.getTeacherEmail() + "): ");
-            if (!email.isEmpty()) t.setTeacherEmail(email);
-
-            String phone = InputUtil.getString("SĐT (" + t.getTeacherPhone() + "): ");
-            if (!phone.isEmpty()) t.setTeacherPhone(phone);
-
-            String homeroom = InputUtil.getString("Lớp CN (" + t.getTeacherHomeroom() + "): ");
-            if (!homeroom.isEmpty()) t.setTeacherHomeroom(homeroom);
-
-            // Lưu lại file
-            List<String> newLines = teachers.stream().map(Teacher::toString).collect(Collectors.toList());
-            FileUtil.writeLines(FILE_PATH, newLines);
-
-            System.out.println("Cập nhật thông tin giáo viên thành công!");
-        } catch (IOException e) {
-            System.err.println("Lỗi khi đọc/ghi file: " + e.getMessage());
+        if (success) {
+            System.out.println("✅ Cập nhật giáo viên thành công!");
+        } else {
+            System.out.println("❌ Có lỗi xảy ra khi cập nhật giáo viên!");
         }
 
         pause();
