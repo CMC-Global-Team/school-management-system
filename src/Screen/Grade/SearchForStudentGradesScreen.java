@@ -22,7 +22,7 @@ public class SearchForStudentGradesScreen extends AbstractScreen {
     public void handleInput() {
         List<String> gradeLines = new ArrayList<>();
         try{
-            if(FileUtil.fileExists("src/Data/grades.txt")){
+            if(FileUtil.fileExists("data/grades.txt")){
                 gradeLines = FileUtil.readLines("src/Data/grades.txt");
             }
         } catch (IOException e) {
