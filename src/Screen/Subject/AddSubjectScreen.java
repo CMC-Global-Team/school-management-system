@@ -25,7 +25,17 @@ public class AddSubjectScreen extends AbstractScreen {
     @Override
     public void handleInput() {
         System.out.println("\nNhập thông tin môn học:");
-        String id = InputUtil.getNonEmptyString("Mã ID: ");
+        String id;
+        while(true){
+            id = InputUtil.getNonEmptyString("Mã môn học: ");
+            if(SubjectService.getInstance().isSubjectIdExists(id)){
+                System.out.println("Mã môn học " + id + " đã tồn tại!");
+            }
+            else{
+                break;
+            }
+        }
+
         String name = input("Tên Môn Học: ");
         int lessonCount = InputUtil.getInt("Số tiết học: ");
         double confficient = InputUtil.getDouble("Hệ số: ");
