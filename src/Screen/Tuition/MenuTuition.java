@@ -27,7 +27,7 @@ public class MenuTuition extends AbstractScreen {
     @Override
     public void display() {
         System.out.println("┌──────────────────────────────────────────┐");
-        System.out.println("│        HỆ THỐNG QUẢN LÝ HỌC SINH         │");
+        System.out.println("│        HỆ THỐNG QUẢN LÝ HỌC Phí          │");
         System.out.println("├──────────────────────────────────────────┤");
         System.out.println("│  1. Ghi nhận thanh toán học phí          │");
         System.out.println("│  2. Sửa thông tin học phí                │");
