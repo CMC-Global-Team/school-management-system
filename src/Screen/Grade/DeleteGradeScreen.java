@@ -37,7 +37,7 @@ public class DeleteGradeScreen extends AbstractScreen {
             if(EnterGradeScreen.isExistGradeID(gradeID, gradeLines)) {
                 for (String line : gradeLines) {
                     Grade g = Grade.fromString(line);
-                    if (g != null && g.getGradeId().equals(gradeID)) {
+                    if (g != null && g.getGradeId().equalsIgnoreCase(gradeID)) {
                         deleted = true;
 
                     } else {
@@ -58,17 +58,15 @@ public class DeleteGradeScreen extends AbstractScreen {
             pause();
         }
     }
-    public static List<String> ignoreGradeID(String gradeID, List<String> gradeLines) {
+    public static List<String> ignoreSubjectID(String subjectID, List<String> gradeLines) {
         List<String> remains = new ArrayList<>();
-        if(!gradeID.isEmpty() && EnterGradeScreen.isExistGradeID(gradeID, gradeLines)) {
+        if(!subjectID.isEmpty()) {
             for (String line : gradeLines) {
                 Grade g = Grade.fromString(line);
-                if (g != null &&!g.getGradeId().equalsIgnoreCase(gradeID)) {
+                if (g != null && !g.getSubjectId().equalsIgnoreCase(subjectID)) {
                     remains.add(line);
                 }
             }
-        }else {
-            System.out.println("Không tìm thấy điểm có mã: " + gradeID);
         }
         return remains;
     }

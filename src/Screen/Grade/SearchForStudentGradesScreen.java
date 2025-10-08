@@ -66,7 +66,7 @@ public class SearchForStudentGradesScreen extends AbstractScreen {
         List<String> results = new ArrayList<>();
         for(String line : gradeLines){
             Grade grade = Grade.fromString(line);
-            if(grade != null && grade.getStudentId().equals(studentID)){
+            if(grade != null && grade.getStudentId().equalsIgnoreCase(studentID)){
                 results.add(line);
             }
         }

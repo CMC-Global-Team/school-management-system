@@ -208,7 +208,7 @@ public class EditGradeScreen extends AbstractScreen {
     private void updateInfo(List<String> gradeLines, List<String> updateLines ,Grade grade) {
         for(String line : gradeLines){
             Grade g = Grade.fromString(line);
-            if(g != null && g.getGradeId().equals(grade.getGradeId())){
+            if(g != null && g.getGradeId().equalsIgnoreCase(grade.getGradeId())){
                 updateLines.add(grade.toString());
             }
             else {
