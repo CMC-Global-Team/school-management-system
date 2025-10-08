@@ -27,22 +27,22 @@ public class EditGradeScreen extends AbstractScreen {
         List<String> updatedGrade = new ArrayList<>();
 
         try {
-            if (FileUtil.fileExists("src/Data/students.txt")) {
+            if (FileUtil.fileExists("data/students.txt")) {
                 studentLines = FileUtil.readLines("src/Data/students.txt");
             } else {
                 System.out.println("Không tìm thấy file học sinh!");
                 pause();
                 return;
             }
-            if (FileUtil.fileExists("src/Data/subjects.txt")){
+            if (FileUtil.fileExists("data/subjects.txt")){
                 subjectLines = FileUtil.readLines("src/Data/subjects.txt");
             } else {
                 System.out.println("Không tìm thấy file môn học!");
                 pause();
                 return;
             }
-            if (FileUtil.fileExists("src/Data/grades.txt")) {
-                gradeLines = FileUtil.readLines("src/Data/grades.txt");
+            if (FileUtil.fileExists("data/grades.txt")) {
+                gradeLines = FileUtil.readLines("data/grades.txt");
             } else {
                 System.out.println("Không tìm thấy file điểm số!");
                 pause();

@@ -22,8 +22,8 @@ public class DeleteGradeScreen extends AbstractScreen {
         List<String> gradeLines = new ArrayList<>();
         List<String> remains = new ArrayList<>();
         try {
-            if(FileUtil.fileExists("src/Data/grades.txt")) {
-                gradeLines = FileUtil.readLines("src/Data/grades.txt");
+            if(FileUtil.fileExists("dta/grades.txt")) {
+                gradeLines = FileUtil.readLines("data/grades.txt");
             }else {
                 System.out.println("Không tìm thấy file học sinh!");
                 pause();

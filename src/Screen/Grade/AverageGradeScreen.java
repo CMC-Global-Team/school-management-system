@@ -25,8 +25,8 @@ public class AverageGradeScreen extends AbstractScreen{
         double averageGrade = 0;
         double coefficient = 0;
         try{
-            if (FileUtil.fileExists("src/Data/grades.txt")) {
-                gradeLines = FileUtil.readLines("src/Data/grades.txt");
+            if (FileUtil.fileExists("data/grades.txt")) {
+                gradeLines = FileUtil.readLines("data/grades.txt");
             }
         }catch (IOException e) {
             System.out.println("Có lỗi xảy ra khi đọc file điểm số: " + e.getMessage());
