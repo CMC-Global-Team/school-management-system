@@ -1,19 +1,18 @@
 package Services;
 
-import Models.Teacher;
-import Models.TeachingAssignment;
-import Utils.FileUtil;
-import Utils.InputUtil;
-import Models.Student;
-
+import Models.Classroom;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.io.File;
+import Models.TeachingAssignment; // nhớ import đúng package của bạn
+import Utils.FileUtil;
+import Utils.InputUtil;
 
+import Models.Teacher;
+import java.util.Optional;
+import java.util.Scanner;
 /**
  * TeacherService - Lớp Service xử lý logic nghiệp vụ cho giáo viên
  * Dựa theo mẫu StudentService, sử dụng Singleton Pattern
@@ -253,7 +252,7 @@ public class TeacherService {
         if (str.length() <= maxLength) return str;
         return str.substring(0, maxLength - 3) + "...";
     }
-    
+
     /**
      * PHân công giảng daạy cho giáo viên
      */
@@ -397,13 +396,11 @@ public class TeacherService {
         InputUtil.pressEnterToContinue();
     }
 
-    /**
-     * Hiển thị danh sách lớp và môn mà giáo viên đang giảng dạy
-     */
-    /**
-     * Xuất danh sách lớp và môn mà giáo viên đang giảng dạy ra file
-     */
 
+
+    /**
+     * Xuất danh sách lớp & môn mà giáo viên đang giảng dạy ra file txt
+     */
     public void showTeachingClassesByTeacher() {
         try {
             // 1️⃣ Đọc file phân công
@@ -414,37 +411,25 @@ public class TeacherService {
                 return;
             }
 
-            // 2️⃣ Nhập mã giáo viên cần xem
+            // 2️⃣ Nhập mã giáo viên
             String teacherId = InputUtil.getNonEmptyString("Nhập mã giáo viên cần xem: ");
 
             // 3️⃣ Lọc danh sách lớp theo mã giáo viên
             List<TeachingAssignment> assignments = new ArrayList<>();
-            int lineNumber = 0;
-
             for (String line : lines) {
-                lineNumber++;
-                if (line == null || line.trim().isEmpty()) continue; // bỏ qua dòng trống
-
                 TeachingAssignment ta = TeachingAssignment.fromString(line);
-
-                if (ta == null) {
-                    System.out.println("⚠ Bỏ qua dòng " + lineNumber + " vì dữ liệu sai định dạng: " + line);
-                    continue;
-                }
-
-                if (ta.getTeacherId().equalsIgnoreCase(teacherId)) {
+                if (ta != null && ta.getTeacherId().equalsIgnoreCase(teacherId)) {
                     assignments.add(ta);
                 }
             }
 
-            // 4️⃣ Kiểm tra kết quả
             if (assignments.isEmpty()) {
                 System.out.println("⚠ Giáo viên này hiện chưa được phân công giảng dạy lớp nào!");
                 InputUtil.pressEnterToContinue();
                 return;
             }
 
-            // 5️⃣ Tạo nội dung cần ghi ra file
+            // 4️⃣ Tạo nội dung xuất ra file
             String teacherName = assignments.get(0).getTeacherName();
             StringBuilder sb = new StringBuilder();
 
@@ -462,21 +447,19 @@ public class TeacherService {
             sb.append("-----------------------------------------------------------\n");
             sb.append(String.format("Tổng số lớp đang giảng dạy: %d%n", assignments.size()));
 
-            // 6️⃣ Ghi nội dung ra file
-            File outputFile = new File("Data/teaching_classes_report.txt");
-            outputFile.getParentFile().mkdirs(); // tạo thư mục Data nếu chưa có
+            // 5️⃣ Ghi nội dung ra file (tạo thư mục nếu chưa có)
+            File folder = new File("Data/reports");
+            folder.mkdirs(); // tạo thư mục Data/reports nếu chưa có
 
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+            String outputPath = "Data/reports/" + teacherId + "_teaching.txt";
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath))) {
                 writer.write(sb.toString());
             }
 
-            System.out.println("\n✅ Đã xuất danh sách ra file: " + outputFile.getAbsolutePath());
+            System.out.println("\n✅ Đã xuất danh sách ra file: " + new File(outputPath).getAbsolutePath());
 
-        } catch (IOException e) {
-            System.out.println("❌ Lỗi khi đọc hoặc ghi file: " + e.getMessage());
-            e.printStackTrace();
         } catch (Exception e) {
-            System.out.println("❌ Lỗi không xác định: " + e.getMessage());
+            System.out.println("❌ Lỗi khi đọc hoặc ghi file: " + e.getMessage());
             e.printStackTrace();
         }
 
