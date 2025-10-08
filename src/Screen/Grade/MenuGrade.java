@@ -30,7 +30,7 @@ public class MenuGrade extends AbstractScreen {
     @Override
     public void display() {
         System.out.println("┌──────────────────────────────────────────┐");
-        System.out.println("│        HỆ THỐNG QUẢN LÝ HỌC SINH         │");
+        System.out.println("│           HỆ THỐNG QUẢN LÝ ĐIỂM          │");
         System.out.println("├──────────────────────────────────────────┤");
         System.out.println("│  1. Nhập điểm cho học sinh               │");
         System.out.println("│  2. Sửa điểm đã nhập                     │");
@@ -50,7 +50,7 @@ public class MenuGrade extends AbstractScreen {
         while (running) {
             clearScreen();
             display();
-            int choice = inputInt("Nhap lua chon cua ban: ");
+            int choice = inputInt("Nhâp lựa chọn của bạn: ");
 
             switch (choice) {
                 case 1:
@@ -86,12 +86,13 @@ public class MenuGrade extends AbstractScreen {
                     exportScreen.handleInput();
                     break;
                 case 0:
-                    System.out.println("\nDang quay lai menu chinh...");
+                    System.out.println("\nĐang quay lại menu chính...");
                     running = false;
                     break;
                 default:
-                    System.out.println("\nLua chon khong hop le. Vui long thu lai.");
+                    System.out.println("\n Lựa chọn không hợp lệ, vui lòng thử lại");
                     pause();
+                    break;
             }
         }
 
