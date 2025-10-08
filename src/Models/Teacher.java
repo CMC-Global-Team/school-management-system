@@ -49,6 +49,17 @@ public class Teacher extends Person implements IEntity {
     public void setTeacherHomeroom(String teacherHomeroom) { this.teacherHomeroom = teacherHomeroom; }
 
     @Override
+    public String getStatusText() {
+        return switch (status) {
+            case "0" -> "Đang dạy";
+            case "1" -> "Nghỉ phép";
+            case "2" -> "Đã nghỉ";
+            default -> status;
+        };
+    }
+
+
+    @Override
     public String getId() { return id; }
 
     // Xuất ra file
@@ -98,7 +109,7 @@ public class Teacher extends Person implements IEntity {
                 ", Email='" + teacherEmail + '\'' +
                 ", Phone='" + teacherPhone + '\'' +
                 ", Homeroom='" + teacherHomeroom + '\'' +
-                ", Status='" + status + '\'' +
+                ", Status='" + getStatus() + '\'' +
                 '}';
     }
 
