@@ -92,6 +92,7 @@ public class MenuGrade extends AbstractScreen {
                 default:
                     System.out.println("\n Lựa chọn không hợp lệ, vui lòng thử lại");
                     pause();
+                    break;
             }
         }
 
