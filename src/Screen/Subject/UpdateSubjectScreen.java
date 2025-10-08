@@ -4,7 +4,7 @@ package Screen.Subject;
 import Screen.AbstractScreen;
 import Services.SubjectService;
 import Models.Subject;
-
+import java.util.*;
 
 import java.util.Optional;
 
@@ -64,9 +64,12 @@ public class UpdateSubjectScreen extends AbstractScreen {
         if (!desc.isEmpty()) s.setDescription(desc);
 
 
-        String teacher = input("Giáo viên phụ trách (" + s.getTeacherInCharge() + "): ");
-        if (!teacher.isEmpty()) s.setTeacherInCharge(teacher);
-
+        System.out.println("Giáo viên phụ trách hiện tại: " + String.join(", ", s.getTeachersInCharge()));
+        String teacherInput = input("Nhập danh sách giáo viên mới (cách nhau bằng dấu ,) hoặc Enter để giữ nguyên: ");
+        if (!teacherInput.isEmpty()) {
+            String[] teacherIDs = teacherInput.split("\\s*,\\s*");
+            s.setTeachersInCharge(Arrays.asList(teacherIDs));
+        }
 
         String status = input("Trạng thái (" + s.getStatus() + "): ");
         if (!status.isEmpty()) s.setStatus(status);

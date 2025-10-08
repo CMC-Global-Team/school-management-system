@@ -50,13 +50,13 @@ public class SubjectRepository extends BaseFileRepository<Subject> {
 
 
 
-
-        // Tìm kiếm theo giáo viên phụ trách
-        if (subject.getTeacherInCharge() != null &&
-                subject.getTeacherInCharge().toLowerCase().contains(lowerKeyword)) {
-            return true;
+        if (subject.getTeachersInCharge() != null) {
+            for (String teacherID : subject.getTeachersInCharge()) {
+                if (teacherID.toLowerCase().contains(lowerKeyword)) {
+                    return true;
+                }
+            }
         }
-
 
         return false;
     }}

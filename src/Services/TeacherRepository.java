@@ -33,9 +33,11 @@ public class TeacherRepository extends BaseFileRepository<Teacher> {
         }
 
         // Tìm kiếm môn giảng dạy
-        if (teacher.getTeacherSubject() != null &&
-                teacher.getTeacherSubject().toLowerCase().contains(lowerKeyword)) {
-            return true;
+        if (teacher.getTeacherSubjects() != null) {
+            String subjectsStr = String.join(",", teacher.getTeacherSubjects()).toLowerCase();
+            if (subjectsStr.contains(lowerKeyword)) {
+                return true;
+            }
         }
 
         // Tìm kiếm theo lớp chủ nhiệm

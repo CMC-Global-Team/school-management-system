@@ -31,7 +31,7 @@ public class TeacherService {
      * Thêm giáo viên mới
      */
     public boolean addTeacher(String id, String name, String status,
-                              String subject, String degree, int experience,
+                              List<String> teacherSubjects, String degree, int experience,
                               String email, String phone, String homeroom) {
 
         if (id == null || id.trim().isEmpty()) {
@@ -49,13 +49,35 @@ public class TeacherService {
             return false;
         }
 
-        Teacher teacher = new Teacher(id, name, status, subject, degree, experience, email, phone, homeroom);
+        Teacher teacher = new Teacher(id, name, status, teacherSubjects, degree, experience, email, phone, homeroom);
 
         if (repository.add(teacher)) {
             System.out.println("✓ Thêm giáo viên thành công!");
             return true;
         } else {
             System.out.println("Lỗi: Không thể thêm giáo viên!");
+            return false;
+        }
+    }
+    /**
+     * gán giáo viên với môn
+     */
+    public boolean assignSubjectsToTeacher(String teacherID, List<String> subjectIDs) {
+        Optional<Teacher> optTeacher = repository.findById(teacherID);
+        if (optTeacher.isEmpty()) {
+            System.out.println("Không tìm thấy giáo viên với ID: " + teacherID);
+            return false;
+        }
+
+        Teacher teacher = optTeacher.get();
+        teacher.setTeacherSubjects(subjectIDs);
+
+        boolean updated = repository.update(teacher);
+        if (updated) {
+            System.out.println("✓ Gán môn học thành công cho giáo viên " + teacher.getName());
+            return true;
+        } else {
+            System.out.println("Lỗi: Không thể cập nhật giáo viên!");
             return false;
         }
     }
@@ -160,10 +182,14 @@ public class TeacherService {
         System.out.println("├─────────────────────────────────────────────────────────────────────────────────────┤");
 
         for (Teacher t : teachers) {
+            String subjects = t.getTeacherSubjects() != null && !t.getTeacherSubjects().isEmpty()
+                    ? String.join(", ", t.getTeacherSubjects())
+                    : "-";
+
             System.out.printf("│ %-10s %-20s %-15s %-15s %-10d %-20s │%n",
                     truncate(t.getId(), 10),
                     truncate(t.getName(), 20),
-                    truncate(t.getTeacherSubject(), 15),
+                    truncate(subjects, 15),
                     truncate(t.getTeacherDegree(), 15),
                     t.getTeacherExperience(),
                     truncate(t.getTeacherHomeroom(), 20)
@@ -193,10 +219,12 @@ public class TeacherService {
         System.out.println("├─────────────────────────────────────────────────────────────────────────────────────┤");
 
         for (Teacher t : results) {
+            String subjects = String.join(", ", t.getTeacherSubjects()); // List -> String
+
             System.out.printf("│ %-10s %-20s %-15s %-15s %-10d %-20s │%n",
                     truncate(t.getId(), 10),
                     truncate(t.getName(), 20),
-                    truncate(t.getTeacherSubject(), 15),
+                    truncate(subjects, 15),
                     truncate(t.getTeacherDegree(), 15),
                     t.getTeacherExperience(),
                     truncate(t.getTeacherHomeroom(), 20)

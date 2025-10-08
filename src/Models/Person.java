@@ -25,4 +25,14 @@ public class Person {
     public String toString() {
         return id + "," + name + "," + status;
     }
+
+    // --- Mặc định map cho Student, Teacher sẽ override nếu cần ---
+    public String getStatusText() {
+        return switch (status) {
+            case "0" -> "Đang hoạt động";
+            case "1" -> "Tạm nghỉ";
+            case "2" -> "Đã nghỉ / Tốt nghiệp";
+            default -> status;
+        };
+    }
 }
