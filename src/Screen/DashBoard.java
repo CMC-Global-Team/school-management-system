@@ -3,6 +3,7 @@ package Screen;
 import Screen.ClassRoom.ClassRoomMenu;
 import Screen.Grade.MenuGrade;
 import Screen.Student.StudentMenu;
+import Screen.Subject.MenuSubjectScreen;
 import Screen.Teacher.MenuTeacherScreen;
 import Screen.Tuition.MenuTuition;
 
@@ -12,6 +13,7 @@ public class DashBoard extends AbstractScreen {
     private final StudentMenu studentMenu;
     private final MenuGrade menuGrade;
     private final MenuTuition  menuTuition;
+    private final MenuSubjectScreen menuSubject;
 
     public DashBoard() {
         super();
@@ -20,6 +22,7 @@ public class DashBoard extends AbstractScreen {
         this.studentMenu = new StudentMenu();
         this.menuGrade = new MenuGrade();
         this.menuTuition = new MenuTuition();
+        this.menuSubject = new MenuSubjectScreen();
     }
 
     @Override
@@ -50,8 +53,7 @@ public class DashBoard extends AbstractScreen {
                     classRoomMenu.handleInput();
                     break;
                 case 2:
-                    System.out.println("\nChuc nang Quan Ly Mon Hoc dang duoc phat trien...");
-                    pause();
+                    menuSubject.handleInput();
                     break;
                 case 3:
                     menuGrade.handleInput();
