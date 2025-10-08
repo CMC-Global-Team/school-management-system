@@ -97,20 +97,12 @@ public class Teacher extends Person implements IEntity {
         }
     }
 
-    @Override
+   @Override
     public String toString() {
-        String subjects = "[" + String.join(",", teacherSubjects) + "]";
-        return "Teacher{" +
-                "ID='" + id + '\'' +
-                ", Name='" + name + '\'' +
-                ", Subjects=[" + subjects + "]" +
-                ", Degree='" + teacherDegree + '\'' +
-                ", Experience=" + teacherExperience +
-                ", Email='" + teacherEmail + '\'' +
-                ", Phone='" + teacherPhone + '\'' +
-                ", Homeroom='" + teacherHomeroom + '\'' +
-                ", Status='" + getStatus() + '\'' +
-                '}';
+        // Lưu theo định dạng dễ đọc, dễ tách
+        return id + "|" + name + "|" + String.join(",", teacherSubjects) + "|" +
+                teacherDegree + "|" + teacherExperience + "|" + teacherEmail + "|" +
+                teacherPhone + "|" + teacherHomeroom + "|" + status;
     }
 
     @Override
