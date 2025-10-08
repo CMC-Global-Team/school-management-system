@@ -1,58 +1,49 @@
 package Screen.Teacher;
 
-import Models.Teacher;
 import Screen.AbstractScreen;
-import Utils.FileUtil;
+import Services.TeacherService;
 import Utils.InputUtil;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class DeleteTeacherScreen extends AbstractScreen {
 
-    private static final String FILE_PATH = "src/Data/teachers.txt";
+    private final TeacherService teacherService = TeacherService.getInstance();
 
     @Override
     public void display() {
-        System.out.println("┌──────────────────────────────────────────┐");
-        System.out.println("│           XÓA GIÁO VIÊN                  │");
-        System.out.println("└──────────────────────────────────────────┘");
+        System.out.println("┌──────────────────────────────────────────────┐");
+        System.out.println("│                 XÓA GIÁO VIÊN                │");
+        System.out.println("└──────────────────────────────────────────────┘");
     }
 
     @Override
     public void handleInput() {
-        try {
-            List<String> lines = FileUtil.readLines(FILE_PATH);
-            List<Teacher> teachers = lines.stream()
-                    .map(Teacher::fromString)
-                    .collect(Collectors.toList());
+        String id = InputUtil.getString("Nhập mã giáo viên cần xóa: ").trim();
 
-            if (teachers.isEmpty()) {
-                System.out.println("Hiện chưa có giáo viên nào trong hệ thống!");
-                pause();
-                return;
-            }
-
-            String id = InputUtil.getNonEmptyString("Nhập mã giáo viên cần xóa: ");
-            Teacher t = teachers.stream()
-                    .filter(x -> x.getId().equalsIgnoreCase(id))
-                    .findFirst()
-                    .orElse(null);
-
-            if (t == null) {
-                System.out.println("Không tìm thấy giáo viên với mã này!");
-            } else {
-                teachers.remove(t);
-                // Lưu lại file
-                List<String> newLines = teachers.stream().map(Teacher::toString).collect(Collectors.toList());
-                FileUtil.writeLines(FILE_PATH, newLines);
-                System.out.println("Đã xóa giáo viên thành công!");
-            }
-        } catch (IOException e) {
-            System.err.println("Lỗi khi đọc/ghi file: " + e.getMessage());
+        // Kiểm tra mã tồn tại
+        if (!teacherService.isTeacherIdExists(id)) {
+            System.out.println("Không tìm thấy giáo viên có mã '" + id + "'.");
+            return;
         }
 
-        pause();
+        // Xác nhận xóa
+        System.out.print("Bạn có chắc chắn muốn xóa giáo viên này? (y/n): ");
+        String confirm = scanner.nextLine().trim().toLowerCase();
+
+        if (!confirm.equals("y")) {
+            System.out.println("⏳ Hủy thao tác xóa.");
+            return;
+        }
+
+        // Gọi service để xóa
+        boolean success = teacherService.deleteTeacher(id);
+
+        if (success) {
+            System.out.println("Xóa giáo viên thành công!");
+        } else {
+            System.out.println("Xóa giáo viên thất bại. Vui lòng thử lại!");
+        }
+
+        System.out.println("\nNhấn Enter để quay lại menu...");
+        scanner.nextLine();
     }
 }
