@@ -51,8 +51,16 @@ public class UpdateTeacherScreen extends AbstractScreen {
             String name = InputUtil.getString("Tên mới (" + t.getName() + "): ");
             if (!name.isEmpty()) t.setName(name);
 
-            String subject = InputUtil.getString("Môn dạy (" + t.getTeacherSubject() + "): ");
-            if (!subject.isEmpty()) t.setTeacherSubject(subject);
+            String subjectInput = InputUtil.getString("Môn dạy (" + String.join(", ", t.getTeacherSubjects()) + "): ");
+            if (!subjectInput.isEmpty()) {
+                List<String> subjects =
+                        List.of(subjectInput.split(","))
+                                .stream()
+                                .map(String::trim)
+                                .collect(Collectors.toList());
+                t.setTeacherSubjects(subjects);
+            }
+
 
             String degree = InputUtil.getString("Học vị (" + t.getTeacherDegree() + "): ");
             if (!degree.isEmpty()) t.setTeacherDegree(degree);
@@ -76,7 +84,9 @@ public class UpdateTeacherScreen extends AbstractScreen {
             if (!homeroom.isEmpty()) t.setTeacherHomeroom(homeroom);
 
             // Lưu lại file
-            List<String> newLines = teachers.stream().map(Teacher::toString).collect(Collectors.toList());
+            List<String> newLines = teachers.stream()
+                    .map(Teacher::toFileString)
+                    .collect(Collectors.toList());
             FileUtil.writeLines(FILE_PATH, newLines);
 
             System.out.println("Cập nhật thông tin giáo viên thành công!");

@@ -4,7 +4,7 @@ import Models.Teacher;
 import Screen.AbstractScreen;
 import Services.TeacherService;
 import Utils.InputUtil;
-
+import java.util.*;
 public class AddTeacherScreen extends AbstractScreen {
 
     private final TeacherService teacherService = TeacherService.getInstance();
@@ -29,7 +29,10 @@ public class AddTeacherScreen extends AbstractScreen {
         }
 
         String name = InputUtil.getNonEmptyString("Họ và tên: ");
-        String subject = InputUtil.getNonEmptyString("Môn giảng dạy: ");
+        String subjectInput = InputUtil.getNonEmptyString("Môn giảng dạy (nếu nhiều, ngăn cách bằng dấu ','): ");
+        List<String> subjects = Arrays.stream(subjectInput.split(","))
+                .map(String::trim)
+                .toList();
         String degree = InputUtil.getNonEmptyString("Trình độ (Cử nhân/Thạc sĩ/Tiến sĩ): ");
         int experience = InputUtil.getInt("Số năm kinh nghiệm: ");
         String email = InputUtil.getNonEmptyString("Email: ");
@@ -38,7 +41,7 @@ public class AddTeacherScreen extends AbstractScreen {
         String status = InputUtil.getNonEmptyString("Trạng thái (Đang dạy/Nghỉ hưu/Công tác): ");
 
         boolean added = teacherService.addTeacher(
-                id, name, status, subject, degree, experience, email, phone, homeroom
+                id, name, status, subjects, degree, experience, email, phone, homeroom
         );
 
         if (added) {

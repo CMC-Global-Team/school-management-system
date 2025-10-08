@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ListTeacherScreen extends AbstractScreen {
 
-    private static final String FILE_PATH = "src/Data/teachers.txt";
+    private static final String FILE_PATH = "data/teachers.txt";
     private List<Teacher> teacherList;
 
     public ListTeacherScreen() {
@@ -49,8 +49,9 @@ public class ListTeacherScreen extends AbstractScreen {
         System.out.println("-------------------------------------------------------------------------------------------");
 
         for (Teacher t : teacherList) {
+            String subjects = String.join(", ", t.getTeacherSubjects());
             System.out.printf("%-10s %-20s %-15s %-10s %-5d %-20s %-15s %-10s %-10s%n",
-                    t.getId(), t.getName(), t.getTeacherSubject(), t.getTeacherDegree(),
+                    t.getId(), t.getName(), subjects, t.getTeacherDegree(),
                     t.getTeacherExperience(), t.getTeacherEmail(), t.getTeacherPhone(),
                     t.getTeacherHomeroom(), t.getStatus());
         }
@@ -59,6 +60,6 @@ public class ListTeacherScreen extends AbstractScreen {
     @Override
     public void handleInput() {
         System.out.println("\nNhấn Enter để quay lại...");
-        scanner.nextLine(); // đợi người dùng nhấn Enter
+        scanner.nextLine();
     }
 }

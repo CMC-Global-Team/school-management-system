@@ -5,6 +5,7 @@ import Models.Teacher;
 import Services.TeacherService;
 import Utils.InputUtil;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +51,8 @@ public class SearchTeacherScreen extends AbstractScreen {
             case 3 -> {
                 String subject = InputUtil.getString("Nhập môn dạy: ").trim().toLowerCase();
                 results = teachers.stream()
-                        .filter(t -> t.getTeacherSubject().toLowerCase().contains(subject))
+                        .filter(t -> t.getTeacherSubjects().stream() // lặp qua từng môn
+                                .anyMatch(sub -> sub.toLowerCase().contains(subject))) // kiểm tra có match không
                         .collect(Collectors.toList());
             }
             case 4 -> {
@@ -78,11 +80,12 @@ public class SearchTeacherScreen extends AbstractScreen {
             System.out.println("------------------------------------------------------------------------------------------------------------------------");
 
             for (Teacher t : results) {
+                String subject = String.join(", ", t.getTeacherSubjects());
                 System.out.printf("%-8s %-20s %-15s %-12s %-10s %-25s %-15s %-15s %-15d%n",
                         t.getId(),
                         t.getName(),
                         t.getStatus(),
-                        t.getTeacherSubject(),
+                        subject,
                         t.getTeacherDegree(),
                         t.getTeacherEmail(),
                         t.getTeacherPhone(),
