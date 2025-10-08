@@ -3,14 +3,15 @@ package Services;
 import Models.Subject;
 import java.util.List;
 import java.util.Optional;
+
 public class SubjectService {
     private static SubjectService instance;
     private final SubjectRepository repository;
 
-
     private SubjectService() {
         this.repository = new SubjectRepository();
     }
+
     /**
      * Lấy instance duy nhất của SubjectService (Singleton)
      */
@@ -20,29 +21,36 @@ public class SubjectService {
         }
         return instance;
     }
+
     /**
      * Thêm môn học mới
      */
     public boolean addSubject(String subjectID, String subjectName, int lessonCount, double confficient,
                               String subjectType, String description, String teacherInCharge, String status) {
+
         if (subjectID == null || subjectID.trim().isEmpty()) {
             System.out.println("Lỗi: Mã môn học không được để trống!");
             return false;
         }
-
 
         if (subjectName == null || subjectName.trim().isEmpty()) {
             System.out.println("Lỗi: Tên môn học không được để trống!");
             return false;
         }
 
-
+        // Kiểm tra trùng mã môn học
         if (repository.exists(subjectID)) {
             System.out.println("Lỗi: Mã môn học '" + subjectID + "' đã tồn tại!");
             return false;
         }
 
+        // Kiểm tra trùng tên môn học (không phân biệt hoa/thường)
+        if (isSubjectNameExists(subjectName)) {
+            System.out.println("Lỗi: Tên môn học '" + subjectName + "' đã tồn tại!");
+            return false;
+        }
 
+        // Nếu hợp lệ thì thêm
         Subject subject = new Subject(subjectID, subjectName, lessonCount, confficient, subjectType, description, teacherInCharge, status);
         if (repository.add(subject)) {
             System.out.println("✓ Thêm môn học thành công!");
@@ -52,21 +60,30 @@ public class SubjectService {
             return false;
         }
     }
+
     /**
-     * Cập nhật môn học
+     * Kiểm tra trùng tên môn học (không phân biệt hoa/thường)
      */
+    public boolean isSubjectNameExists(String subjectName) {
+        if (subjectName == null || subjectName.trim().isEmpty()) return false;
+        String normalized = subjectName.trim().toLowerCase();
+
+        List<Subject> subjects = repository.findAll();
+        return subjects.stream()
+                .anyMatch(s -> s.getSubjectName() != null &&
+                        s.getSubjectName().trim().toLowerCase().equals(normalized));
+    }
+
     public boolean updateSubject(Subject subject) {
         if (subject == null) {
             System.out.println("Lỗi: Subject không được null!");
             return false;
         }
 
-
         if (!repository.exists(subject.getSubjectID())) {
             System.out.println("Lỗi: Không tìm thấy môn học với mã '" + subject.getSubjectID() + "'!");
             return false;
         }
-
 
         if (repository.update(subject)) {
             System.out.println("✓ Cập nhật môn học thành công!");
@@ -76,21 +93,17 @@ public class SubjectService {
             return false;
         }
     }
-    /**
-     * Xóa môn học theo ID
-     */
+
     public boolean deleteSubject(String subjectID) {
         if (subjectID == null || subjectID.trim().isEmpty()) {
             System.out.println("Lỗi: Mã môn học không được để trống!");
             return false;
         }
 
-
         if (!repository.exists(subjectID)) {
             System.out.println("Lỗi: Không tìm thấy môn học với mã '" + subjectID + "'!");
             return false;
         }
-
 
         if (repository.delete(subjectID)) {
             System.out.println("✓ Xóa môn học thành công!");
@@ -100,42 +113,29 @@ public class SubjectService {
             return false;
         }
     }
-    /**
-     * Tìm môn học theo ID
-     */
+
     public Optional<Subject> findById(String subjectID) {
         return repository.findById(subjectID);
     }
-    /**
-     * Lấy tất cả môn học
-     */
+
     public List<Subject> getAllSubjects() {
         return repository.findAll();
     }
-    /**
-     * Tìm kiếm môn học theo từ khóa
-     */
+
     public List<Subject> searchSubjects(String keyword) {
         return repository.search(keyword);
     }
-    /**
-     * Kiểm tra mã môn học đã tồn tại chưa
-     */
+
     public boolean isSubjectIdExists(String subjectID) {
         return repository.exists(subjectID);
     }
-    /**
-     * Đếm tổng số môn học
-     */
+
     public int getTotalSubjects() {
         return repository.count();
     }
-    /**
-     * Hiển thị danh sách tất cả môn học
-     */
+
     public void displayAllSubjects() {
         List<Subject> subjects = getAllSubjects();
-
 
         if (subjects.isEmpty()) {
             System.out.println("\nKhông có môn học nào trong hệ thống.");
@@ -162,24 +162,21 @@ public class SubjectService {
         System.out.println("└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘");
         System.out.println("Tổng số môn học: " + subjects.size());
     }
-    /**
-     * Hiển thị kết quả tìm kiếm môn học
-     */
+
     public void displaySearchResults(String keyword) {
         List<Subject> results = searchSubjects(keyword);
-
 
         if (results.isEmpty()) {
             System.out.println("\nKhông tìm thấy môn học nào phù hợp với từ khóa: '" + keyword + "'");
             return;
         }
+
         System.out.println("\n┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐");
         System.out.println("│                                     KẾT QUẢ TÌM KIẾM MÔN HỌC                                                  │");
         System.out.println("├───────────────────────────────────────────────────────────────────────────────────────────────────────────────┤");
         System.out.printf("│ %-10s %-25s %-10s %-10s %-15s %-20s %-20s %-10s │%n",
                 "Mã MH", "Tên MH", "Số tiết", "Hệ số", "Loại môn", "Mô tả", "Giáo viên", "Trạng thái");
         System.out.println("├───────────────────────────────────────────────────────────────────────────────────────────────────────────────┤");
-
 
         for (Subject s : results) {
             System.out.printf("│ %-10s %-25s %-10d %-10.2f %-15s %-20s %-20s %-10s │%n",
@@ -193,7 +190,6 @@ public class SubjectService {
                     truncate(s.getStatus(), 10)
             );
         }
-
 
         System.out.println("└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘");
         System.out.println("Tìm thấy: " + results.size() + " môn học");
