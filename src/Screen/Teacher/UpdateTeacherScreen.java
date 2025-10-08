@@ -33,7 +33,7 @@ public class UpdateTeacherScreen extends AbstractScreen {
         Teacher existing = teacherService.findById(id).orElse(null);
 
         if (existing == null) {
-            System.out.println("⚠ Không tìm thấy giáo viên có mã '" + id + "'.");
+            System.out.println("Không tìm thấy giáo viên có mã '" + id + "'.");
             pause();
             return;
         }
@@ -57,7 +57,7 @@ public class UpdateTeacherScreen extends AbstractScreen {
             try {
                 existing.setTeacherExperience(Integer.parseInt(expStr));
             } catch (NumberFormatException e) {
-                System.out.println("⚠ Kinh nghiệm không hợp lệ, giữ nguyên giá trị cũ.");
+                System.out.println("Kinh nghiệm không hợp lệ, giữ nguyên giá trị cũ.");
             }
         }
 
@@ -74,9 +74,9 @@ public class UpdateTeacherScreen extends AbstractScreen {
         boolean success = teacherService.updateTeacher(existing);
 
         if (success) {
-            System.out.println("✅ Cập nhật giáo viên thành công!");
+            System.out.println("Cập nhật giáo viên thành công!");
         } else {
-            System.out.println("❌ Có lỗi xảy ra khi cập nhật giáo viên!");
+            System.out.println("Có lỗi xảy ra khi cập nhật giáo viên!");
         }
 
         pause();
