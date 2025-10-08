@@ -20,8 +20,8 @@ public class GradeClassificationScreen extends AbstractScreen {
     public void handleInput() {
         List<String> gradeLines = new ArrayList<>();
         try {
-            if(FileUtil.fileExists("src/Data/grades.txt")){
-                gradeLines = FileUtil.readLines("src/Data/grades.txt");
+            if(FileUtil.fileExists("data/grades.txt")){
+                gradeLines = FileUtil.readLines("data/grades.txt");
             }
         }catch (IOException e){
             System.out.println("Lỗi khi đọc file điểm số: " + e.getMessage());
