@@ -27,7 +27,7 @@ public class ListTeacherScreen extends AbstractScreen {
         List<Teacher> teachers = teacherService.getAllTeachers();
 
         if (teachers.isEmpty()) {
-            System.out.println("⚠ Hiện chưa có giáo viên nào trong hệ thống.");
+            System.out.println("Hiện chưa có giáo viên nào trong hệ thống.");
         } else {
             teacherService.displayAllTeachers();
         }
