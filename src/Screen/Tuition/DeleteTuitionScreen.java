@@ -27,36 +27,10 @@ public class DeleteTuitionScreen extends AbstractScreen {
 
     @Override
     public void handleInput() {
-        String tuitionId;
+        String tuitionId = InputUtil.getNonEmptyString("Nhập mã học phí cần xóa (ví dụ: TF0001): ");
 
-        // Nhập mã học phí phải đúng định dạng TF + 4 số
-        while (true) {
-            tuitionId = InputUtil.getNonEmptyString("Nhập mã học phí cần xóa (ví dụ: TF0001): ");
-            if (!tuitionId.matches("^TF\\d{4}$")) {
-                System.out.println(" Mã học phí phải viết hoa dạng TFxxxx (ví dụ: TF0001).");
-                continue;
-            }
-            break;
-        }
-
-        Optional<Tuition> optionalTuition = tuitionService.findById(tuitionId);
-
-        if (optionalTuition.isEmpty()) {
-            System.out.println(" Không tìm thấy học phí với mã: " + tuitionId);
-            InputUtil.pressEnterToContinue();
-            return;
-        }
-
-        Tuition t = optionalTuition.get();
-        System.out.println("→ Xóa học phí của học sinh: " + t.getStudentId() +
-                " | Số tiền: " + String.format("%,.0f", t.getAmount()) + " VND");
-
-        // Gọi service để xóa
-        if (tuitionService.deleteTuition(tuitionId)) {
-            System.out.println(" Xóa học phí thành công!");
-        } else {
-            System.out.println(" Xóa thất bại!");
-        }
+        // Gọi service để xóa, service sẽ xử lý validate và thông báo
+        tuitionService.removeTuition(tuitionId);
 
         InputUtil.pressEnterToContinue();
     }

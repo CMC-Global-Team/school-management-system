@@ -28,14 +28,14 @@ public class RecordTuitionScreen extends AbstractScreen {
 
         // 🗓 Nhập ngày theo định dạng dd-MM-yyyy
         LocalDate paymentDate;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         while (true) {
             try {
-                String dateStr = InputUtil.getNonEmptyString("Ngày thu (dd-MM-yyyy): ");
+                String dateStr = InputUtil.getNonEmptyString("Ngày thu (dd/MM/yyyy): ");
                 paymentDate = LocalDate.parse(dateStr, formatter);
                 break;
             } catch (Exception e) {
-                System.out.println(" Định dạng ngày không hợp lệ! Vui lòng nhập lại (vd: 07-10-2025).");
+                System.out.println(" Định dạng ngày không hợp lệ! Vui lòng nhập lại (vd: 07/10/2025).");
             }
         }
 

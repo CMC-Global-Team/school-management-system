@@ -12,7 +12,7 @@ public class InputUtil {
     private static Scanner scanner = new Scanner(System.in);
 
     // Chỉnh định dạng ngày sang dd-MM-yyyy
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
 
@@ -68,15 +68,15 @@ public class InputUtil {
         }
     }
 
-    // Hàm getDate chỉnh sang định dạng dd-MM-yyyy
+    // Hàm getDate chỉnh sang định dạng dd/MM/yyyy
     public static LocalDate getDate(String prompt) {
         while (true) {
             try {
-                System.out.print(prompt + " (dd-MM-yyyy): ");
+                System.out.print(prompt + " (dd/MM/yyyy): ");
                 String input = scanner.nextLine().trim();
                 return LocalDate.parse(input, DATE_FORMATTER);
             } catch (DateTimeParseException e) {
-                System.out.println("Vui lòng nhập ngày theo định dạng dd-MM-yyyy!");
+                System.out.println("Vui lòng nhập ngày theo định dạng dd/MM/yyyy!");
             }
         }
     }

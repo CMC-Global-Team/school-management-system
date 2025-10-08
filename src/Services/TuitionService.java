@@ -20,7 +20,7 @@ import java.util.Optional;
 public class TuitionService {
     private static TuitionService instance;
     private final TuitionRepository repository;
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private final StudentRepository studentRepository;
 
@@ -113,7 +113,7 @@ public class TuitionService {
         //  6. Kiểm tra ngày thu không được lớn hơn hôm nay
         while (paymentDate == null || paymentDate.isAfter(LocalDate.now())) {
             try {
-                System.out.print("Nhập ngày thu (dd-MM-yyyy): ");
+                System.out.print("Nhập ngày thu (dd/MM/yyyy): ");
                 String input = sc.nextLine().trim();
                 paymentDate = LocalDate.parse(input, DATE_FORMATTER);
 
@@ -122,7 +122,7 @@ public class TuitionService {
                     paymentDate = null; // reset để nhập lại
                 }
             } catch (DateTimeParseException e) {
-                System.out.println(" Định dạng ngày không hợp lệ, phải là dd-MM-yyyy. Nhập lại!");
+                System.out.println(" Định dạng ngày không hợp lệ, phải là dd/MM/yyyy. Nhập lại!");
                 paymentDate = null;
             }
         }
@@ -159,27 +159,93 @@ public class TuitionService {
 
 
     /**
-     * Cập nhật  chỉnh sửa học phí
+     * Cập nhật học phí từ các input (có thể bỏ trống nếu không muốn thay đổi)
      */
-    public boolean updateTuition(Tuition tuition) {
-        if (tuition == null) {
+    public boolean updateTuition(Tuition t,
+                                 String studentIdInput,
+                                 String semesterInput,
+                                 String schoolYearInput,
+                                 String amountInput,
+                                 String paymentDateInput,
+                                 String statusInput,
+                                 String methodInput,
+                                 String noteInput) {
+        if (t == null) {
             System.out.println("Lỗi: Tuition không được null!");
             return false;
         }
 
-        if (!repository.exists(tuition.getTuitionId())) {
-            System.out.println("Lỗi: Không tìm thấy học phí với mã '" + tuition.getTuitionId() + "'!");
+        if (!repository.exists(t.getTuitionId())) {
+            System.out.println("Lỗi: Không tìm thấy học phí với mã '" + t.getTuitionId() + "'!");
             return false;
         }
 
-        if (repository.update(tuition)) {
-            System.out.println("✓ Cập nhật học phí thành công!");
+        // StudentId
+        if (studentIdInput != null && !studentIdInput.isEmpty()) {
+            t.setStudentId(studentIdInput);
+        }
+
+        // Semester
+        if (semesterInput != null && !semesterInput.isEmpty()) {
+            try {
+                t.setSemester(Integer.parseInt(semesterInput));
+            } catch (NumberFormatException ignored) {}
+        }
+
+        // SchoolYear
+        if (schoolYearInput != null && !schoolYearInput.isEmpty()) {
+            if (schoolYearInput.matches("^\\d{4}-\\d{4}$")) {
+                t.setSchoolYear(schoolYearInput);
+            }
+        }
+
+        // Amount
+        if (amountInput != null && !amountInput.isEmpty()) {
+            try {
+                double money = Double.parseDouble(amountInput);
+                if (money >= 0) t.setAmount(money);
+            } catch (NumberFormatException ignored) {}
+        }
+
+        // PaymentDate
+        if (paymentDateInput != null && !paymentDateInput.isEmpty()) {
+            try {
+                LocalDate newDate = LocalDate.parse(paymentDateInput, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                if (!newDate.isAfter(LocalDate.now())) t.setPaymentDate(newDate);
+            } catch (Exception ignored) {}
+        }
+
+        // Status
+        if (statusInput != null && !statusInput.isEmpty()) {
+            if (statusInput.equalsIgnoreCase("Đã thu") || statusInput.equalsIgnoreCase("Chưa thu")) {
+                t.setStatus(statusInput);
+
+                // Method
+                if (statusInput.equalsIgnoreCase("Đã thu") && methodInput != null && !methodInput.isEmpty()) {
+                    if (methodInput.equalsIgnoreCase("Tiền mặt") || methodInput.equalsIgnoreCase("Chuyển khoản")) {
+                        t.setMethod(methodInput);
+                    }
+                } else if (statusInput.equalsIgnoreCase("Chưa thu")) {
+                    t.setMethod(null);
+                }
+            }
+        }
+
+        // Note
+        if (noteInput != null && !noteInput.isEmpty()) {
+            t.setNote(noteInput);
+        }
+
+        // Cập nhật vào repository
+        if (repository.update(t)) {
+            System.out.println(" Cập nhật học phí thành công!");
             return true;
         } else {
             System.out.println("Lỗi: Không thể cập nhật học phí!");
             return false;
         }
     }
+
 
     /**
      * Xóa học phí theo ID
@@ -378,6 +444,74 @@ public class TuitionService {
         return report;
     }
 
+    /**
+     * Áp dụng miễn giảm học phí theo phần trăm
+     * @param tuitionId Mã học phí cần miễn giảm
+     * @param percent Phần trăm miễn giảm (0-100)
+     * @return true nếu cập nhật thành công, false nếu thất bại
+     */
+    public boolean applyDiscount(String tuitionId, double percent) {
+        if (percent < 0 || percent > 100) {
+            System.out.println(" Mức miễn giảm phải trong khoảng 0 - 100!");
+            return false;
+        }
+
+        Optional<Tuition> optionalTuition = repository.findById(tuitionId);
+        if (optionalTuition.isEmpty()) {
+            System.out.println(" Không tìm thấy học phí với mã '" + tuitionId + "'!");
+            return false;
+        }
+
+        Tuition t = optionalTuition.get();
+
+        // Tính số tiền sau khi miễn giảm
+        double discountAmount = t.getAmount() * (percent / 100);
+        double newAmount = t.getAmount() - discountAmount;
+
+        t.setAmount(newAmount);
+        t.setNote("Được miễn giảm " + percent + "% học phí");
+
+        if (repository.update(t)) {
+            System.out.println("Đã áp dụng miễn giảm học phí thành công!");
+            System.out.println("Số tiền sau khi miễn giảm: " + String.format("%,.0f", newAmount) + " VND");
+            return true;
+        } else {
+            System.out.println("Áp dụng miễn giảm thất bại!");
+            return false;
+        }
+    }
+
+    /**
+     * Xóa học phí theo mã
+     * @param tuitionId Mã học phí
+     * @return true nếu xóa thành công, false nếu thất bại
+     */
+    public boolean removeTuition(String tuitionId) {
+        if (tuitionId == null || tuitionId.trim().isEmpty()) {
+            System.out.println("Lỗi: Mã học phí không được để trống!");
+            return false;
+        }
+
+        if (!repository.exists(tuitionId)) {
+            System.out.println("Lỗi: Không tìm thấy học phí với mã '" + tuitionId + "'!");
+            return false;
+        }
+
+        Optional<Tuition> optionalTuition = repository.findById(tuitionId);
+        if (optionalTuition.isPresent()) {
+            Tuition t = optionalTuition.get();
+            System.out.println("→ Xóa học phí của học sinh: " + t.getStudentId() +
+                    " | Số tiền: " + String.format("%,.0f", t.getAmount()) + " VND");
+        }
+
+        if (repository.delete(tuitionId)) {
+            System.out.println("Xóa học phí thành công!");
+            return true;
+        } else {
+            System.out.println("Lỗi: Không thể xóa học phí!");
+            return false;
+        }
+    }
 
 
     private String truncate(String str, int maxLength) {
