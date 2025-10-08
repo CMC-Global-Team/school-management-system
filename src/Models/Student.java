@@ -42,6 +42,17 @@ public class Student extends Person implements IEntity {
     public void setAddress(String address){this.address = address;}
 
     @Override
+    public String getStatusText() {
+        return switch (status) {
+            case "0" -> "Đang học";
+            case "1" -> "Tạm nghỉ";
+            case "2" -> "Đã tốt nghiệp";
+            default -> status;
+        };
+    }
+
+
+    @Override
     public String toString(){
         return "Student: " + id + " - " + name + ", DOB: " + dateOfBirth + 
                ", Class: " + className + ", Gender: " + gender;
