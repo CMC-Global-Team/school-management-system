@@ -10,7 +10,7 @@ public class MenuSubjectScreen extends AbstractScreen {
     private final DeleteSubjectScreen deleteScreen;
     private final SearchSubjectScreen searchScreen;
     private final ListSubjectScreen listScreen;
-    //private final AssignTeacherScreen assignTeacherScreen;
+    private final AssignTeacherScreen assignTeacherScreen;
     private final EditSubjectScreen editSubjectScreen;
 
 
@@ -21,7 +21,7 @@ public class MenuSubjectScreen extends AbstractScreen {
         this.deleteScreen = new DeleteSubjectScreen();
         this.searchScreen = new SearchSubjectScreen();
         this.listScreen = new ListSubjectScreen();
-        //this.assignTeacherScreen = new AssignTeacherScreen();
+        this.assignTeacherScreen = new AssignTeacherScreen();
         this.editSubjectScreen = new EditSubjectScreen();
     }
 
@@ -70,8 +70,8 @@ public class MenuSubjectScreen extends AbstractScreen {
                     searchScreen.handleInput();
                     break;
                 case 5:
-                    //assignTeacherScreen.display();
-                    //assignTeacherScreen.handleInput();
+                    assignTeacherScreen.display();
+                    assignTeacherScreen.handleInput();
                     System.out.println("Đang phát triển");
                     pause();
                     break;
